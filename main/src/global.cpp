@@ -1,7 +1,5 @@
 #include <global.h>
 
-
-
 bool write_led = false;
 
 void MyCallbacks::onWrite(BLECharacteristic *pCharacteristic)
