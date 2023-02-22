@@ -1,7 +1,12 @@
+#include <global.h>
+
 #include <setup.h>
 #include <task1.h>
 #include <task2.h>
 
+#include <BLEDevice.h>
+#include <BLEUtils.h>
+#include <BLEServer.h>
 #include <Arduino.h>
 
 //Task1code: blinks an LED every 1000 ms
@@ -55,4 +60,29 @@ void setupTasks(TaskHandle_t Task1, TaskHandle_t Task2) {
                   &Task2,      /* Task handle to keep track of created task */
                   1);          /* pin task to core 1 */
    delay(500); 
+}
+
+void setupBluetooth(){
+    // See the following for generating UUIDs:
+    // https://www.uuidgenerator.net/
+
+    BLEDevice::init("ESP32-BLE-Server");
+    BLEServer *pServer = BLEDevice::createServer();
+
+    BLEService *pService = pServer->createService(SERVICE_UUID);
+
+    BLECharacteristic *pCharacteristic = pService->createCharacteristic(
+                                            CHARACTERISTIC_UUID,
+                                            BLECharacteristic::PROPERTY_READ |
+                                            BLECharacteristic::PROPERTY_WRITE
+                                        );
+
+    pCharacteristic->setCallbacks(new MyCallbacks());
+
+    pCharacteristic->setValue("Hello World");
+    pService->start();
+
+    BLEAdvertising *pAdvertising = pServer->getAdvertising();
+    pAdvertising->start();
+    
 }
