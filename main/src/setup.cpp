@@ -62,7 +62,7 @@ void setupTasks(TaskHandle_t Task1, TaskHandle_t Task2) {
    delay(500); 
 }
 
-void setupBluetooth(){
+void setupBluetooth() {
     // See the following for generating UUIDs:
     // https://www.uuidgenerator.net/
 
@@ -84,5 +84,4 @@ void setupBluetooth(){
 
     BLEAdvertising *pAdvertising = pServer->getAdvertising();
     pAdvertising->start();
-    
 }
