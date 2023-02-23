@@ -1,6 +1,7 @@
+#include <Arduino.h>
 #include <global.h>
 
-bool write_led = false;
+String state = "";
 
 BLEServer* pServer = NULL;
 BLECharacteristic* pCharacteristic = NULL;
@@ -11,14 +12,10 @@ void characteristicCallbacks::onWrite(BLECharacteristic *pCharacteristic) {
    std::string value = pCharacteristic->getValue();
 
    if (value.length() > 0) {
-      Serial.println("*********");
-      Serial.print("New value: ");
-      for (int i = 0; i < value.length(); i++) {
-         Serial.print(value[i]);
-      }
-
-      Serial.println();
-      Serial.println("*********");
+      state = "";
+      for (int i = 0; i < value.length(); i++)
+         state += value[i];
+      Serial.print(state);
    }
 }
 
