@@ -14,9 +14,8 @@ void setup() {
    Serial.begin(115200); 
 
    // setup functions
-   setupTasks(Task1, Task2);
    setupBluetooth();
-   pinMode(LED, OUTPUT);
+   setupTasks(Task1, Task2);
 
    Serial.println("------------------------------------");
    Serial.println("-            Setup done            -");
