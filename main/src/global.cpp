@@ -15,7 +15,8 @@ void characteristicCallbacks::onWrite(BLECharacteristic *pCharacteristic) {
       state = "";
       for (int i = 0; i < value.length(); i++)
          state += value[i];
-      Serial.print(state);
+      Serial.println("New state: ");
+      Serial.println(state);
    }
 }
 
