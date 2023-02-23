@@ -4,10 +4,10 @@
 #include <task1.h>
 #include <task2.h>
 
+#include <Arduino.h>
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
-#include <Arduino.h>
 
 //Task1code: blinks an LED every 1000 ms
 void Task1code( void * pvParameters ) {
@@ -63,25 +63,34 @@ void setupTasks(TaskHandle_t Task1, TaskHandle_t Task2) {
 }
 
 void setupBluetooth() {
-    // See the following for generating UUIDs:
-    // https://www.uuidgenerator.net/
+   BLEDevice::init("ESP32");
 
-    BLEDevice::init("ESP32-BLE-Server");
-    BLEServer *pServer = BLEDevice::createServer();
+   // start server
+   pServer = BLEDevice::createServer();
+   pServer->setCallbacks(new serverCallbacks());
 
-    BLEService *pService = pServer->createService(SERVICE_UUID);
+   // start service
+   BLEService *pService = pServer->createService(SERVICE_UUID);
 
-    BLECharacteristic *pCharacteristic = pService->createCharacteristic(
-                                            CHARACTERISTIC_UUID,
-                                            BLECharacteristic::PROPERTY_READ |
-                                            BLECharacteristic::PROPERTY_WRITE
-                                        );
+   // create characteristics
+   pCharacteristic = pService->createCharacteristic(
+                                          CHARACTERISTIC_UUID,
+                                          BLECharacteristic::PROPERTY_READ |
+                                          BLECharacteristic::PROPERTY_WRITE
+                                       );
 
-    pCharacteristic->setCallbacks(new MyCallbacks());
+   pCharacteristic->setCallbacks(new characteristicCallbacks());
 
-    pCharacteristic->setValue("Hello World");
-    pService->start();
+   // set inital characteristic value
+   pCharacteristic->setValue("Hello World");
+   pService->start();
 
-    BLEAdvertising *pAdvertising = pServer->getAdvertising();
-    pAdvertising->start();
+   // Start advertising
+   BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
+   pAdvertising->addServiceUUID(SERVICE_UUID);
+   pAdvertising->setScanResponse(false);
+   pAdvertising->setMinPreferred(0x0);  // set value to 0x00 to not advertise this parameter
+   BLEDevice::startAdvertising();
+
+   Serial.println("Bluetooth setup finished");
 }
