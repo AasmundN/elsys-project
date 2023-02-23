@@ -5,6 +5,9 @@
 #include <BLEUtils.h>
 #include <BLEServer.h>
 
+#define LED 2
+extern String state;
+
 // Bluetooth utilities
 
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
