@@ -73,17 +73,34 @@ void setupBluetooth() {
    BLEService *pService = pServer->createService(SERVICE_UUID);
 
    // create characteristics
-   pCharacteristic = pService->createCharacteristic(
-                                          CHARACTERISTIC_UUID,
+   pStatusCharacteristic = pService->createCharacteristic(
+                                          STATUS_CHARACTERISTIC_UUID,
                                           BLECharacteristic::PROPERTY_READ |
                                           BLECharacteristic::PROPERTY_WRITE
                                        );
 
-   pCharacteristic->setCallbacks(new characteristicCallbacks());
+   pColorCharacteristic = pService->createCharacteristic(
+                                          COLOR_CHARACTERISTIC_UUID,
+                                          BLECharacteristic::PROPERTY_READ |
+                                          BLECharacteristic::PROPERTY_WRITE
+                                       );
+
+   pMatrixCharacteristic = pService->createCharacteristic(
+                                          MATRIX_CHARACTERISTIC_UUID,
+                                          BLECharacteristic::PROPERTY_READ |
+                                          BLECharacteristic::PROPERTY_WRITE
+                                       );
+
+   pStatusCharacteristic->setCallbacks(new characteristicCallbacks());
+   pColorCharacteristic->setCallbacks(new characteristicCallbacks());
+   pMatrixCharacteristic->setCallbacks(new characteristicCallbacks());
 
    // set inital characteristic value
-   pCharacteristic->setValue("Hello World");
+   pStatusCharacteristic->setValue("");
+   pColorCharacteristic->setValue("");
+   pMatrixCharacteristic->setValue("");
    pService->start();
+   
 
    // Start advertising
    BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
