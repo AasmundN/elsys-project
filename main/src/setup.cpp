@@ -91,9 +91,11 @@ void setupBluetooth() {
                                           BLECharacteristic::PROPERTY_WRITE
                                        );
 
-   pStatusCharacteristic->setCallbacks(new characteristicCallbacks());
-   pColorCharacteristic->setCallbacks(new characteristicCallbacks());
-   pMatrixCharacteristic->setCallbacks(new characteristicCallbacks());
+   // set callbacks
+   characteristicCallbacks *callbacks = new characteristicCallbacks();
+   pStatusCharacteristic->setCallbacks(callbacks);
+   pColorCharacteristic->setCallbacks(callbacks);
+   pMatrixCharacteristic->setCallbacks(callbacks);
 
    // set inital characteristic value
    pStatusCharacteristic->setValue("");
