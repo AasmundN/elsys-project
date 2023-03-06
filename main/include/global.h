@@ -33,3 +33,5 @@ class serverCallbacks: public BLEServerCallbacks {
    void onConnect(BLEServer* pServer);
    void onDisconnect(BLEServer* pServer);
 };
+
+int* hexStringToArray(String hexString);

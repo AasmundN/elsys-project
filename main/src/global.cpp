@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <global.h>
 
-String state = "";
+String state = "sound";
 String color = "";
 String matrix = "";
 
@@ -47,3 +47,12 @@ void serverCallbacks::onConnect(BLEServer* pServer) {
 void serverCallbacks::onDisconnect(BLEServer* pServer) {
    deviceConnected = false;
 }
+
+int* hexStringToInt(String hexString) {
+   int array[3];
+   array[0] = (int)strtol(hexString.substring(0, 2).c_str(), NULL, 16);
+   array[1] = (int)strtol(hexString.substring(2, 4).c_str(), NULL, 16);
+   array[2] = (int)strtol(hexString.substring(4, 6).c_str(), NULL, 16);
+   return array;
+}
+
