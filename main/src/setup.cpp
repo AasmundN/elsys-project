@@ -70,7 +70,7 @@ void setupBluetooth() {
    pServer->setCallbacks(new serverCallbacks());
 
    // start service
-   BLEService *pService = pServer->createService(SERVICE_UUID);
+   BLEService* pService = pServer->createService(SERVICE_UUID);
 
    // create characteristics
    pStatusCharacteristic = pService->createCharacteristic(
@@ -103,7 +103,6 @@ void setupBluetooth() {
    pMatrixCharacteristic->setValue("");
    pService->start();
    
-
    // Start advertising
    BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
    pAdvertising->addServiceUUID(SERVICE_UUID);
