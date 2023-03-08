@@ -2,14 +2,17 @@
    <v-app h-screen>
       <v-expansion-panels>
          <v-expansion-panel
-            title="MGP-hatt"
-            text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi, ratione debitis quis est labore voluptatibus! Eaque cupiditate minima">
+            title="Partyhatt!"
+            text="Dette er en kort beskrivelse av hva Hatten er, hvordan man bruker den, og hvorfor man bruker den. Vi håper at alt er gøy og trivelig og at ingenting slutter å virke.">
          </v-expansion-panel>
       </v-expansion-panels>
 
       <v-main>
-         <connect v-if="!status" :connecting="connecting" @connect="connectDevice" />
-         <mode v-else @writeValue="writeCharacteristic" />
+         <Connect v-if="!status" :connecting="connecting" @connect="connectDevice" />
+         <Mode v-else :mode="mode" @set-mode="setMode" />
+         <Matrix
+            v-if="mode === 'matrix' && status"
+            @writeValue="(value) => writeCharacteristic(value, 'matrix')" />
       </v-main>
 
       <div class="d-flex justify-center align-center px-5 py-2">
@@ -21,7 +24,7 @@
          <v-btn v-if="status" @click="disconnectDevice" color="red">Koble fra hatt</v-btn>
       </div>
 
-      <v-snackbar v-model="snackbar" :timeout="2500">
+      <v-snackbar v-model="snackbar" :timeout="4000">
          {{ message }}
 
          <template v-slot:actions>
@@ -36,11 +39,17 @@ import { ref } from "vue"
 import { useTheme } from "vuetify"
 
 // components
-import connect from "./views/Connect.vue"
-import mode from "./views/Mode.vue"
+import Connect from "./views/Connect.vue"
+import Mode from "./views/Mode.vue"
+import Matrix from "./components/Matrix.vue"
 
 const serviceUuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
-const characteristicUuid = "beb5483e-36e1-4688-b7f5-ea07361b26a8"
+
+const characteristicUuids = {
+   mode: "beb5483e-36e1-4688-b7f5-ea07361b26a8",
+   color: "e963c47e-c96a-4aee-8859-922adb4ac93a",
+   matrix: "9f1b5ff8-b8ee-4e6c-b0be-668d85113b13",
+}
 
 const dec = new TextDecoder()
 const enc = new TextEncoder()
@@ -50,9 +59,16 @@ const snackbar = ref(false)
 const status = ref(false)
 const connecting = ref(false)
 const themeMode = ref(false)
+// modes: sound input motion
+const mode = ref("sound")
 const theme = useTheme()
 
-let device, server, service, characteristic
+let device, server, service
+let characteristics = {
+   mode: null,
+   color: null,
+   matrix: null,
+}
 
 const toggleTheme = () => {
    theme.global.name.value = themeMode.value ? "light" : "dark"
@@ -70,8 +86,13 @@ const connectDevice = async () => {
       server = await device.gatt.connect()
       // get service
       service = await server.getPrimaryService(serviceUuid)
-      // get characteristic
-      characteristic = await service.getCharacteristic(characteristicUuid)
+
+      for (const characteristic in characteristics) {
+         characteristics[characteristic] = await service.getCharacteristic(
+            characteristicUuids[characteristic]
+         )
+      }
+
       status.value = true
       connecting.value = false
    } catch (error) {
@@ -87,11 +108,20 @@ const disconnectDevice = () => {
 }
 
 const onDisconnect = () => {
-   console.log("Device disconnected")
    status.value = false
    message.value = "Koblet fra hatt!"
    snackbar.value = true
-   device = server = service = characteristic = null
+   device = server = service = null
+   characteristics = {
+      mode: null,
+      color: null,
+      matrix: null,
+   }
+}
+
+const setMode = (newMode) => {
+   mode.value = newMode
+   writeCharacteristic(enc.encode(newMode), "mode")
 }
 
 const getCharacteristicValue = async () => {
@@ -100,11 +130,9 @@ const getCharacteristicValue = async () => {
    return convertValue(DataView)
 }
 
-const writeCharacteristic = async (value) => {
+const writeCharacteristic = async (value, characteristic) => {
    if (!status.value) return
-   await characteristic.writeValueWithResponse(enc.encode(value))
-   message.value = "Ord sendt til hatt!"
-   snackbar.value = true
+   await characteristics[characteristic].writeValueWithResponse(value)
 }
 
 const convertValue = (DataView) => {
