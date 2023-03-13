@@ -47,10 +47,6 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
    if (strcmp(uuid, COLOR_CHARACTERISTIC_UUID) == 0) {
       pHatParameter = &color;
    }
-   if (strcmp(uuid, MATRIX_CHARACTERISTIC_UUID) == 0) {
-      pHatParameter = &matrix;
-   }
-
    
    std::string value = pCharacteristic->getValue();
 
