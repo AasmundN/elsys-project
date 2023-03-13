@@ -59,7 +59,7 @@ const snackbar = ref(false)
 const status = ref(false)
 const connecting = ref(false)
 const themeMode = ref(false)
-// modes: sound input motion
+// modes: sound matrix motion
 const mode = ref("sound")
 const theme = useTheme()
 

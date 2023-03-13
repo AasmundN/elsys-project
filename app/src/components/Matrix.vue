@@ -44,7 +44,7 @@
 import { ref, computed } from "vue"
 
 // matrix size
-const matrixSize = { x: 18, y: 8 }
+const matrixSize = { x: 19, y: 8 }
 
 const emit = defineEmits(["writeValue"])
 const word = ref("")
