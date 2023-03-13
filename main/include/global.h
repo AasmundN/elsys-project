@@ -10,6 +10,10 @@ extern String state;
 extern String color;
 extern String matrix;
 
+#define rows 19
+#define cols 8
+extern int matrixArray[rows][cols][3];
+
 // Bluetooth utilities
 
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
@@ -33,5 +37,3 @@ class serverCallbacks: public BLEServerCallbacks {
    void onConnect(BLEServer* pServer);
    void onDisconnect(BLEServer* pServer);
 };
-
-int* hexStringToArray(String hexString);
