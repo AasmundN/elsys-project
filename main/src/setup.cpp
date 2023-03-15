@@ -9,13 +9,13 @@
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
-
+ 
 // Matrix 
 void setupMatrix() {
    FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, NUM_LEDS);
+
    int ledIndex = 0;
-   for(int row = 0; row < rows; row++) 
-   {
+   for (int row = 0; row < rows; row++) {
       for(int col = 0; col < cols; col++)
       {
          ledMatrix[row][col] = ledIndex;
@@ -64,8 +64,6 @@ void Task3code( void * pvParameters ) {
       vTaskDelay(1);
    }
 }
-
-
 
 void setupTasks(TaskHandle_t Task1, TaskHandle_t Task2, TaskHandle_t Task3) {
 
@@ -131,7 +129,7 @@ void setupBluetooth() {
                                           BLECharacteristic::PROPERTY_WRITE
                                        );
 
-   pMatrixCharacteristic = pService->createCharacteristic(
+   pSpeedCharacteristic = pService->createCharacteristic(
                                           SPEED_CHARACTERISTIC_UUID,
                                           BLECharacteristic::PROPERTY_READ |
                                           BLECharacteristic::PROPERTY_WRITE

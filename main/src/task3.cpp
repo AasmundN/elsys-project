@@ -3,9 +3,7 @@
 #include <global.h>
 
 int milliSecLastCheck = 0;
-int refreshTime = 100;
-
-int test = 0;
+int refreshTime = 500;
 
 void updateMatrix() {
     //Kode som oppdaterer led matrise
