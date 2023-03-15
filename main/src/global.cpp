@@ -33,6 +33,9 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
       for (int row = 0; row<ROWS; row++) {
          for (int col = 0; col<COLS; col++) {
             for (int k = 0; k<3; k++){
+               // Serial.print(arrIndex);
+               // Serial.print(": ");
+               // Serial.println(byteStream[arrIndex]);
                ledMatrix[row][col][k] = byteStream[arrIndex];
                arrIndex++;
             }
