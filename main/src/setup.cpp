@@ -91,16 +91,25 @@ void setupBluetooth() {
                                           BLECharacteristic::PROPERTY_WRITE
                                        );
 
+   pMatrixCharacteristic = pService->createCharacteristic(
+                                          SPEED_CHARACTERISTIC_UUID,
+                                          BLECharacteristic::PROPERTY_READ |
+                                          BLECharacteristic::PROPERTY_WRITE
+                                       );
+   
+
    // set callbacks
    characteristicCallbacks *callbacks = new characteristicCallbacks();
    pStatusCharacteristic->setCallbacks(callbacks);
    pColorCharacteristic->setCallbacks(callbacks);
    pMatrixCharacteristic->setCallbacks(callbacks);
+   pSpeedCharacteristic->setCallbacks(callbacks);
 
    // set inital characteristic value
    pStatusCharacteristic->setValue("");
    pColorCharacteristic->setValue("");
    pMatrixCharacteristic->setValue("");
+   pSpeedCharacteristic->setValue("");
    pService->start();
    
    // Start advertising
