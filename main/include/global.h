@@ -6,24 +6,28 @@
 #include <BLEServer.h>
 #include <FastLED.h>
 
-#define rows 8
-#define cols 19
-
-extern String state;
-extern String color;
-
-extern uint8_t matrixArray[rows][cols][3];
 
 // IO utilities
 
 #define LED_PIN 5
 #define LED 2
-#define NUM_LEDS 152
-extern int ledMatrix[rows][cols];
-extern CRGB leds[NUM_LEDS];
+
+
+// led matrix utilities
+
+#define ROWS 8
+#define COLS 19
+
+extern uint8_t matrixArray[ROWS][COLS][3];
+extern int ledMatrix[ROWS][COLS];
+extern CRGB leds[ROWS*COLS];
 
 
 // Bluetooth utilities
+
+extern String state;
+extern String color;
+extern String speed;
 
 #define SERVICE_UUID        "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define STATUS_CHARACTERISTIC_UUID "beb5483e-36e1-4688-b7f5-ea07361b26a8"

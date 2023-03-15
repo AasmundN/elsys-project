@@ -15,10 +15,11 @@ void setup() {
    Serial.begin(115200); 
 
    // setup functions
-   setupBluetooth();
    setupMatrix();
+   setupBluetooth();
    setupTasks(Task1, Task2, Task3);
 
+   // setup built in LED
    pinMode(LED, OUTPUT);
    digitalWrite(LED, LOW);
 

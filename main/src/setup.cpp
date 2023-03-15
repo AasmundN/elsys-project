@@ -1,30 +1,24 @@
 #include <global.h>
-
 #include <setup.h>
 #include <task1.h>
 #include <task2.h>
 #include <task3.h>
 
-#include <Arduino.h>
-#include <BLEDevice.h>
-#include <BLEUtils.h>
-#include <BLEServer.h>
- 
 // Matrix 
 void setupMatrix() {
-   FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, NUM_LEDS);
+   FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, ROWS*COLS);
 
    int ledIndex = 0;
-   for (int row = 0; row < rows; row++) {
-      for(int col = 0; col < cols; col++)
-      {
+   for (int row = 0; row < ROWS; row++) {
+      for(int col = 0; col < COLS; col++) {
          ledMatrix[row][col] = ledIndex;
          ledIndex++;
       }
    }
+
+   Serial.println("LED setup done");
 }
 
-//Task1code: blinks an LED every 1000 ms
 void Task1code( void* pvParameters ) {
    Serial.print("Task1 running on core ");
    Serial.println(xPortGetCoreID());
@@ -38,7 +32,6 @@ void Task1code( void* pvParameters ) {
    }
 }
 
-//Task2code: blinks an LED every 700 ms
 void Task2code( void* pvParameters ) {
    Serial.print("Task2 running on core ");
    Serial.println(xPortGetCoreID());
@@ -98,6 +91,8 @@ void setupTasks(TaskHandle_t Task1, TaskHandle_t Task2, TaskHandle_t Task3) {
                   &Task3,      /* Task handle to keep track of created task */
                   1);          /* pin task to core 1 */
    delay(500); 
+
+   Serial.println("Task setup done");
 }
 
 void setupBluetooth() {
@@ -157,5 +152,5 @@ void setupBluetooth() {
    pAdvertising->setMinPreferred(0x0);  // set value to 0x00 to not advertise this parameter
    BLEDevice::startAdvertising();
 
-   Serial.println("Bluetooth setup finished");
+   Serial.println("Bluetooth setup done");
 }
