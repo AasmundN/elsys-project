@@ -10,7 +10,7 @@
 #include <BLEServer.h>
 
 //Task1code: blinks an LED every 1000 ms
-void Task1code( void * pvParameters ) {
+void Task1code( void* pvParameters ) {
    Serial.print("Task1 running on core ");
    Serial.println(xPortGetCoreID());
 
@@ -20,11 +20,9 @@ void Task1code( void * pvParameters ) {
       // do not remove delay: 
       // https://stackoverflow.com/questions/66278271/task-watchdog-got-triggered-the-tasks-did-not-reset-the-watchdog-in-time
       vTaskDelay(1);
-   }
-}
-
+   slkd fjas;dl kfal ;sdf
 //Task2code: blinks an LED every 700 ms
-void Task2code( void * pvParameters ) {
+void Task2code( void* pvParameters ) {
    Serial.print("Task2 running on core ");
    Serial.println(xPortGetCoreID());
 

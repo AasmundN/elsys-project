@@ -4,6 +4,8 @@
 String state = "sound";
 String color = "";
 
+int matrixArray[rows][cols][3];
+
 BLEServer* pServer = NULL;
 BLECharacteristic* pStatusCharacteristic = NULL;
 BLECharacteristic* pColorCharacteristic = NULL;
@@ -15,25 +17,29 @@ bool oldDeviceConnected = false;
 void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
 
    const char* uuid = pCharacteristic->getUUID().toString().c_str();
+   String* pHatParameter = NULL;
 
    // if the charactiristic is matrix
-   if (strcmp(uuid, MATRIX_CHARACTERISTIC_UUID) == 0) {
+   if (strcmp(uuid, MATRIX_CHARACTERISTIC_UUID) == 0){ 
       uint8_t* byteStream = pCharacteristic->getData();
       size_t length = pCharacteristic->getLength();
 
-      for (int i = 0; i<length; i++) {
-         Serial.print(i);
-         Serial.print(": ");
-         Serial.println(*(byteStream+i));
+      int arrIndex = 0;
+      for (int i = 0; i<rows; i++) {
+         for (int j = 0; j<cols; j++){
+            for (int k = 0; k<3; k++){
+               Serial.print(arrIndex);
+               Serial.print(": ");
+               Serial.println(byteStream[arrIndex]);
+               matrixArray[i][j][k] = byteStream[arrIndex];
+               arrIndex++;
+            }
+         }
       }
-
-      // update ledMatrix
-
       return;
    }
 
-   String* pHatParameter;
-   
+   // if the characteristic is status or color
    if (strcmp(uuid, STATUS_CHARACTERISTIC_UUID) == 0) {
       pHatParameter = &state;
    }
@@ -41,7 +47,7 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
    if (strcmp(uuid, COLOR_CHARACTERISTIC_UUID) == 0) {
       pHatParameter = &color;
    }
-
+   
    std::string value = pCharacteristic->getValue();
 
    if (value.length() > 0) {

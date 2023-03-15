@@ -6,9 +6,13 @@
 #include <BLEServer.h>
 
 #define LED 2
+#define rows 19
+#define cols 8
+
 extern String state;
 extern String color;
-extern String matrix;
+
+extern int matrixArray[rows][cols][3];
 
 // Bluetooth utilities
 
@@ -33,5 +37,3 @@ class serverCallbacks: public BLEServerCallbacks {
    void onConnect(BLEServer* pServer);
    void onDisconnect(BLEServer* pServer);
 };
-
-int* hexStringToArray(String hexString);
