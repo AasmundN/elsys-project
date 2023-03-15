@@ -4,7 +4,9 @@
 String state = "sound";
 String color = "";
 
-int matrixArray[rows][cols][3];
+uint8_t matrixArray[rows][cols][3];
+int ledMatrix[rows][cols];
+CRGB leds[NUM_LEDS];
 
 BLEServer* pServer = NULL;
 BLECharacteristic* pStatusCharacteristic = NULL;
@@ -25,13 +27,13 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
       size_t length = pCharacteristic->getLength();
 
       int arrIndex = 0;
-      for (int i = 0; i<rows; i++) {
-         for (int j = 0; j<cols; j++){
+      for (int row = 0; row<rows; row++) {
+         for (int col = 0; col<cols; col++) {
             for (int k = 0; k<3; k++){
                Serial.print(arrIndex);
                Serial.print(": ");
                Serial.println(byteStream[arrIndex]);
-               matrixArray[i][j][k] = byteStream[arrIndex];
+               matrixArray[row][col][k] = byteStream[arrIndex];
                arrIndex++;
             }
          }
