@@ -10,8 +10,10 @@
          <v-btn class="mx-2" color="red" @click="clearMatrix" prepend-icon="mdi-close"> Tøm </v-btn>
       </v-row>
       <v-row no-gutters justify="center" class="mt-10">
-         <v-sheet class="rounded-lg pa-1 bg-grey-darken-4">
-            <v-row no-gutters v-for="i in matrixSize.y" :key="i">
+         <v-sheet
+            class="pa-1 bg-grey-darken-4 rounded-lg matrixContainer"
+            :style="{ maxWidth: 0.9 * width + 'px' }">
+            <v-row no-gutters style="flex-wrap: nowrap" v-for="i in matrixSize.y" :key="i">
                <v-col
                   v-for="j in matrixSize.x"
                   :key="j"
@@ -28,11 +30,11 @@
          </v-sheet>
       </v-row>
       <v-row no-gutters justify="center" class="mt-10">
-         <v-col cols="2">
+         <v-col style="max-width: 400px" class="mx-6">
             <v-slider thumb-label :min="0" :max="5" :step="1"></v-slider>
          </v-col>
       </v-row>
-      <v-row no-gutters justify="center" class="mt-8">
+      <v-row no-gutters justify="center" class="my-6">
          <v-btn color="success" @click="submit" prepend-icon="mdi-cloud-upload">
             Send til hatt!
          </v-btn>
@@ -42,9 +44,12 @@
 
 <script setup>
 import { ref, computed } from "vue"
+import { useDisplay } from "vuetify/lib/framework.mjs"
 
 // matrix size
 const matrixSize = { x: 19, y: 8 }
+
+const { width } = useDisplay()
 
 const emit = defineEmits(["writeValue"])
 const word = ref("")
@@ -90,7 +95,16 @@ const clearMatrix = () => {
 </script>
 
 <style scoped>
+.matrixContainer {
+   overflow: scroll;
+}
+
+.matrixContainer::-webkit-scrollbar {
+   display: none; /* for Chrome, Safari, and Opera */
+}
+
 .led {
+   border-radius: 50%;
    box-sizing: border-box;
    border: 2px #757575 solid;
 }

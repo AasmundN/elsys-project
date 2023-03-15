@@ -2,7 +2,7 @@
    <v-app h-screen>
       <v-expansion-panels>
          <v-expansion-panel
-            title="Partyhatt!"
+            title="Swizz party hatt!"
             text="Dette er en kort beskrivelse av hva Hatten er, hvordan man bruker den, og hvorfor man bruker den. Vi håper at alt er gøy og trivelig og at ingenting slutter å virke.">
          </v-expansion-panel>
       </v-expansion-panels>
