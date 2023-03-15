@@ -3,6 +3,7 @@
 
 String state = "sound";
 String color = "";
+String speed = "";
 
 int matrixArray[rows][cols][3];
 
@@ -10,6 +11,7 @@ BLEServer* pServer = NULL;
 BLECharacteristic* pStatusCharacteristic = NULL;
 BLECharacteristic* pColorCharacteristic = NULL;
 BLECharacteristic* pMatrixCharacteristic = NULL;
+BLECharacteristic* pSpeedCharacteristic = NULL;
 
 bool deviceConnected = false;
 bool oldDeviceConnected = false;
@@ -46,6 +48,10 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
 
    if (strcmp(uuid, COLOR_CHARACTERISTIC_UUID) == 0) {
       pHatParameter = &color;
+   }
+   
+   if (strcmp(uuid, SPEED_CHARACTERISTIC_UUID) == 0) {
+      pHatParameter = &speed;
    }
    
    std::string value = pCharacteristic->getValue();
