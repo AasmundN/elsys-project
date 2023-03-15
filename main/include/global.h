@@ -4,15 +4,24 @@
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
+#include <FastLED.h>
 
-#define LED 2
-#define rows 19
-#define cols 8
+#define rows 8
+#define cols 19
 
 extern String state;
 extern String color;
 
-extern int matrixArray[rows][cols][3];
+extern uint8_t matrixArray[rows][cols][3];
+
+// IO utilities
+
+#define LED_PIN 5
+#define LED 2
+#define NUM_LEDS 152
+extern int ledMatrix[rows][cols];
+extern CRGB leds[NUM_LEDS];
+
 
 // Bluetooth utilities
 

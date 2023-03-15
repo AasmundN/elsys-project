@@ -3,11 +3,26 @@
 #include <setup.h>
 #include <task1.h>
 #include <task2.h>
+#include <task3.h>
 
 #include <Arduino.h>
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
+
+// Matrix 
+void setupMatrix() {
+   FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, NUM_LEDS);
+   int ledIndex = 0;
+   for(int row = 0; row < rows; row++) 
+   {
+      for(int col = 0; col < cols; col++)
+      {
+         ledMatrix[row][col] = ledIndex;
+         ledIndex++;
+      }
+   }
+}
 
 //Task1code: blinks an LED every 1000 ms
 void Task1code( void* pvParameters ) {
@@ -37,7 +52,22 @@ void Task2code( void* pvParameters ) {
    }
 }
 
-void setupTasks(TaskHandle_t Task1, TaskHandle_t Task2) {
+void Task3code( void * pvParameters ) {
+   Serial.print("Task3 running on core ");
+   Serial.println(xPortGetCoreID());
+
+   for(;;) {
+      // task 2 code
+      task3();
+      // do not remove delay: 
+      // https://stackoverflow.com/questions/66278271/task-watchdog-got-triggered-the-tasks-did-not-reset-the-watchdog-in-time
+      vTaskDelay(1);
+   }
+}
+
+
+
+void setupTasks(TaskHandle_t Task1, TaskHandle_t Task2, TaskHandle_t Task3) {
 
    //create a task that will be executed in the Task1code() function, with priority 1 and executed on core 0
    xTaskCreatePinnedToCore(
@@ -58,6 +88,16 @@ void setupTasks(TaskHandle_t Task1, TaskHandle_t Task2) {
                   NULL,        /* parameter of the task */
                   1,           /* priority of the task */
                   &Task2,      /* Task handle to keep track of created task */
+                  1);          /* pin task to core 1 */
+   delay(500); 
+
+   xTaskCreatePinnedToCore(
+                  Task3code,   /* Task function. */
+                  "Task3",     /* name of task. */
+                  10000,       /* Stack size of task */
+                  NULL,        /* parameter of the task */
+                  1,           /* priority of the task */
+                  &Task3,      /* Task handle to keep track of created task */
                   1);          /* pin task to core 1 */
    delay(500); 
 }
