@@ -5,8 +5,8 @@ String state = "sound";
 String color = "";
 String speed = "";
 
-uint8_t matrixArray[ROWS][COLS][3];
-int ledMatrix[ROWS][COLS];
+uint8_t ledMatrix[ROWS][COLS][3];
+int ledMatrixIndices[ROWS][COLS];
 CRGB leds[ROWS*COLS];
 
 BLEServer* pServer = NULL;
@@ -28,14 +28,15 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
       uint8_t* byteStream = pCharacteristic->getData();
       size_t length = pCharacteristic->getLength();
 
+      // update LED matrix
       int arrIndex = 0;
       for (int row = 0; row<ROWS; row++) {
          for (int col = 0; col<COLS; col++) {
             for (int k = 0; k<3; k++){
-               Serial.print(arrIndex);
-               Serial.print(": ");
-               Serial.println(byteStream[arrIndex]);
-               matrixArray[row][col][k] = byteStream[arrIndex];
+               // Serial.print(arrIndex);
+               // Serial.print(": ");
+               // Serial.println(byteStream[arrIndex]);
+               ledMatrix[row][col][k] = byteStream[arrIndex];
                arrIndex++;
             }
          }
@@ -43,18 +44,16 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
       return;
    }
 
-   // if the characteristic is status or color
-   if (strcmp(uuid, STATUS_CHARACTERISTIC_UUID) == 0) {
-      pHatParameter = &state;
-   }
+   // check what characteristic is being written
 
-   if (strcmp(uuid, COLOR_CHARACTERISTIC_UUID) == 0) {
-      pHatParameter = &color;
-   }
+   if (strcmp(uuid, STATUS_CHARACTERISTIC_UUID) == 0) pHatParameter = &state;
+
+   if (strcmp(uuid, COLOR_CHARACTERISTIC_UUID) == 0) pHatParameter = &color;
    
-   if (strcmp(uuid, SPEED_CHARACTERISTIC_UUID) == 0) {
-      pHatParameter = &speed;
-   }
+   if (strcmp(uuid, SPEED_CHARACTERISTIC_UUID) == 0) pHatParameter = &speed;
+
+
+   // save written value
    
    std::string value = pCharacteristic->getValue();
 

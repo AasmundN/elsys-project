@@ -13,6 +13,12 @@ TaskHandle_t Task3;
 void setup() {
    // setup Serial
    Serial.begin(115200); 
+   
+   Serial.println();
+   Serial.println("------------------------------------");
+   Serial.println("-          Starting setup          -");
+   Serial.println("------------------------------------");
+   Serial.println();
 
    // setup functions
    setupMatrix();
@@ -23,9 +29,11 @@ void setup() {
    pinMode(LED, OUTPUT);
    digitalWrite(LED, LOW);
 
+   Serial.println();
    Serial.println("------------------------------------");
    Serial.println("-            Setup done            -");
    Serial.println("------------------------------------");
+   Serial.println();
 }
 
 void loop() {

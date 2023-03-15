@@ -4,14 +4,14 @@
 #include <task2.h>
 #include <task3.h>
 
-// Matrix 
+// setup led matrix
 void setupMatrix() {
    FastLED.addLeds<NEOPIXEL, LED_PIN>(leds, ROWS*COLS);
 
    int ledIndex = 0;
    for (int row = 0; row < ROWS; row++) {
       for(int col = 0; col < COLS; col++) {
-         ledMatrix[row][col] = ledIndex;
+         ledMatrixIndices[row][col] = ledIndex;
          ledIndex++;
       }
    }
@@ -45,7 +45,7 @@ void Task2code( void* pvParameters ) {
    }
 }
 
-void Task3code( void * pvParameters ) {
+void Task3code( void* pvParameters ) {
    Serial.print("Task3 running on core ");
    Serial.println(xPortGetCoreID());
 
@@ -138,7 +138,7 @@ void setupBluetooth() {
    pMatrixCharacteristic->setCallbacks(callbacks);
    pSpeedCharacteristic->setCallbacks(callbacks);
 
-   // set inital characteristic value
+   // set inital characteristic values
    pStatusCharacteristic->setValue("");
    pColorCharacteristic->setValue("");
    pMatrixCharacteristic->setValue("");

@@ -8,12 +8,12 @@ void updateMatrix() {
    for (int row = 0; row < ROWS; row++) {
       for (int col = 0; col < COLS; col++) {
          // get new LED color values
-         uint8_t red = matrixArray[row][col][0];
-         uint8_t green = matrixArray[row][col][1];
-         uint8_t blue = matrixArray[row][col][2];
+         uint8_t red = ledMatrix[row][col][0];
+         uint8_t green = ledMatrix[row][col][1];
+         uint8_t blue = ledMatrix[row][col][2];
 
          // update LED color values
-         leds[ledMatrix[row][col]] = CRGB(red, green, blue);
+         leds[ledMatrixIndices[row][col]] = CRGB(red, green, blue);
       }
    }
 
@@ -21,8 +21,8 @@ void updateMatrix() {
 }
 
 void task3() {
-    if (millis() > milliSecLastCheck + refreshTime) {
-        updateMatrix();
-        milliSecLastCheck = millis();
-    }  
+   if (millis() > milliSecLastCheck + refreshTime) {
+      updateMatrix();
+      milliSecLastCheck = millis();
+   }  
 }
