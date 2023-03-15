@@ -33,9 +33,6 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
       for (int row = 0; row<ROWS; row++) {
          for (int col = 0; col<COLS; col++) {
             for (int k = 0; k<3; k++){
-               // Serial.print(arrIndex);
-               // Serial.print(": ");
-               // Serial.println(byteStream[arrIndex]);
                ledMatrix[row][col][k] = byteStream[arrIndex];
                arrIndex++;
             }
@@ -61,8 +58,6 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
       *pHatParameter = "";
       for (int i = 0; i < value.length(); i++)
          *pHatParameter += value[i];
-      Serial.print("New parameter value: ");
-      Serial.println(*pHatParameter);
    }
 }
 

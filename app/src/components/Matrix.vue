@@ -62,38 +62,30 @@ const setLed = (event) => {
 }
 
 const submit = () => {
-   let ledMatrix = ledElements.value.map((led) => rgbToHex(led.style.backgroundColor))
-   let matrixHexString = matrixToHexString(ledMatrix)
-   emit("writeValue", hexDecode(matrixHexString))
+   const ledMatrix = ledElements.value.map((led) => led.style.backgroundColor)
+   const byteStream = matrixToByteStream(ledMatrix)
+   emit("writeValue", byteStream)
+}
+
+const matrixToByteStream = (ledMatrix) => {
+   let bytes = []
+   let rgb
+
+   ledMatrix.forEach((ledColor) => {
+      if (ledColor === "") {
+         for (let i = 0; i < 3; i++) bytes.push(0)
+         return
+      }
+
+      rgb = ledColor.split("(")[1].split(")")[0].split(",")
+      for (let i = 0; i < 3; i++) bytes.push(parseInt(rgb[i]))
+   })
+
+   return new Uint8Array(bytes).buffer
 }
 
 const clearMatrix = () => {
    ledElements.value.forEach((led) => (led.style.backgroundColor = null))
-}
-
-const matrixToHexString = (matrix) => {
-   let result = ""
-   matrix.forEach((ledColor) => {
-      result += ledColor
-   })
-   return result
-}
-
-const hexDecode = (hexString) => {
-   let bytes = []
-   hexString.replace(/../g, (pair) => {
-      bytes.push(parseInt(pair, 16))
-   })
-   return new Uint8Array(bytes).buffer
-}
-
-const rgbToHex = (rgb) => {
-   if (!rgb) return "000000"
-   let sep = rgb.indexOf(",") > -1 ? "," : " "
-   rgb = rgb.substr(4).split(")")[0].split(sep)
-   return (
-      parseInt(rgb[0]).toString(16) + parseInt(rgb[1]).toString(16) + parseInt(rgb[2]).toString(16)
-   )
 }
 </script>
 
