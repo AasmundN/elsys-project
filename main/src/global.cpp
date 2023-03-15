@@ -53,7 +53,6 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
    if (strcmp(uuid, SPEED_CHARACTERISTIC_UUID) == 0) {
       pHatParameter = &speed;
    }
-
    
    std::string value = pCharacteristic->getValue();
 
