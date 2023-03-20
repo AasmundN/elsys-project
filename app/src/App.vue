@@ -8,11 +8,21 @@
       </v-expansion-panels>
 
       <v-main>
-         <Connect v-if="!status" :connecting="connecting" @connect="connectDevice" />
-         <Mode v-else :mode="mode" @set-mode="setMode" />
-         <Matrix
-            v-if="mode === 'matrix' && status"
-            @writeValue="(value) => writeCharacteristic(value, 'matrix')" />
+         <v-fade-transition leave-absolute>
+            <Connect v-if="!status" :connecting="connecting" @connect="connectDevice" />
+            <Mode v-else :mode="mode" @set-mode="setMode" />
+         </v-fade-transition>
+
+         <v-fade-transition leave-absolute>
+            <Matrix
+               v-if="mode === 'matrix' && status"
+               @writeValue="
+                  (value, characteristic) => writeCharacteristic(value, characteristic)
+               " />
+            <ColorPicker
+               v-if="mode != 'matrix' && status"
+               @write-value="(newColor) => writeCharacteristic(enc.encode(newColor), 'color')" />
+         </v-fade-transition>
       </v-main>
 
       <div class="d-flex justify-center align-center px-5 py-2">
@@ -39,9 +49,10 @@ import { ref } from "vue"
 import { useTheme } from "vuetify"
 
 // components
-import Connect from "./views/Connect.vue"
-import Mode from "./views/Mode.vue"
+import Connect from "./components/Connect.vue"
+import Mode from "./components/Mode.vue"
 import Matrix from "./components/Matrix.vue"
+import ColorPicker from "./components/ColorPicker.vue"
 
 const serviceUuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 
@@ -49,6 +60,7 @@ const characteristicUuids = {
    mode: "beb5483e-36e1-4688-b7f5-ea07361b26a8",
    color: "e963c47e-c96a-4aee-8859-922adb4ac93a",
    matrix: "9f1b5ff8-b8ee-4e6c-b0be-668d85113b13",
+   speed: "89177ae3-2410-4eeb-b484-75861c2e108a",
 }
 
 const dec = new TextDecoder()
@@ -59,7 +71,7 @@ const snackbar = ref(false)
 const status = ref(false)
 const connecting = ref(false)
 const themeMode = ref(false)
-// modes: sound matrix motion
+// modes: sound motion matrix
 const mode = ref("sound")
 const theme = useTheme()
 
@@ -68,6 +80,7 @@ let characteristics = {
    mode: null,
    color: null,
    matrix: null,
+   speed: null,
 }
 
 const toggleTheme = () => {
@@ -124,18 +137,21 @@ const setMode = (newMode) => {
    writeCharacteristic(enc.encode(newMode), "mode")
 }
 
-const getCharacteristicValue = async () => {
-   if (!status.value) return
-   const DataView = await characteristic.readValue()
-   return convertValue(DataView)
-}
-
 const writeCharacteristic = async (value, characteristic) => {
    if (!status.value) return
    await characteristics[characteristic].writeValueWithResponse(value)
 }
-
-const convertValue = (DataView) => {
-   return dec.decode(DataView.buffer)
-}
 </script>
+
+<style scoped>
+/* we will explain what these classes do next! */
+.v-enter-active,
+.v-leave-active {
+   transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+   opacity: 0;
+}
+</style>

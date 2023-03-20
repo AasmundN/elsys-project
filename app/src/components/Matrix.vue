@@ -31,7 +31,7 @@
       </v-row>
       <v-row no-gutters justify="center" class="mt-10">
          <v-col style="max-width: 400px" class="mx-6">
-            <v-slider thumb-label :min="0" :max="5" :step="1"></v-slider>
+            <v-slider thumb-label v-model="speed" :min="0" :max="5" :step="1"></v-slider>
          </v-col>
       </v-row>
       <v-row no-gutters justify="center" class="my-6">
@@ -48,6 +48,7 @@ import { useDisplay } from "vuetify/lib/framework.mjs"
 
 // matrix size
 const matrixSize = { x: 19, y: 8 }
+const enc = new TextEncoder()
 
 const { width } = useDisplay()
 
@@ -56,6 +57,7 @@ const word = ref("")
 const color = ref("")
 const overlay = ref(false)
 const ledElements = ref([])
+const speed = ref(0)
 
 const setLed = (event) => {
    let targetLedStyle = event.target.classList.contains("led")
@@ -66,10 +68,11 @@ const setLed = (event) => {
    else targetLedStyle.backgroundColor = null
 }
 
-const submit = () => {
+const submit = async () => {
    const ledMatrix = ledElements.value.map((led) => led.style.backgroundColor)
    const byteStream = matrixToByteStream(ledMatrix)
-   emit("writeValue", byteStream)
+   emit("writeValue", enc.encode(speed.value), "speed")
+   emit("writeValue", byteStream, "matrix")
 }
 
 const matrixToByteStream = (ledMatrix) => {
