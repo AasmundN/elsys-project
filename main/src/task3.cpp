@@ -1,7 +1,7 @@
 #include <global.h>
 
-unsigned long refreshTime2 = 5;
-unsigned long milliSecLastCheck2 = 0;
+unsigned long refreshTimeUpdateMatrix = 5;
+unsigned long milliSecLastCheckUpdateMatrix = 0;
 
 void updateMatrix() {
    //Kode som oppdaterer led matrise
@@ -21,8 +21,8 @@ void updateMatrix() {
 }
 
 void task3() {
-   if (millis() > milliSecLastCheck2 + refreshTime2) {
+   if (millis() > milliSecLastCheckUpdateMatrix + refreshTimeUpdateMatrix) {
       updateMatrix();
-      milliSecLastCheck2 = millis();
+      milliSecLastCheckUpdateMatrix = millis();
    }  
 }

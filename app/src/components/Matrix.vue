@@ -18,12 +18,12 @@
                   v-for="j in matrixSize.x"
                   :key="j"
                   class="ledContainer"
-                  @mouseenter="
+                  @mouseenter.prevent="
                      (event) => {
                         if (event.buttons) setLed(event)
                      }
                   "
-                  @mousedown="setLed">
+                  @mousedown.prevent="setLed">
                   <div class="pa-2 ma-1 rounded-xl led" ref="ledElements"></div>
                </v-col>
             </v-row>
@@ -59,6 +59,8 @@ const overlay = ref(false)
 const ledElements = ref([])
 const speed = ref(0)
 
+let previousMatrix
+
 const setLed = (event) => {
    let targetLedStyle = event.target.classList.contains("led")
       ? event.target.style
@@ -69,10 +71,16 @@ const setLed = (event) => {
 }
 
 const submit = async () => {
-   const ledMatrix = ledElements.value.map((led) => led.style.backgroundColor)
-   const byteStream = matrixToByteStream(ledMatrix)
    emit("writeValue", enc.encode(speed.value), "speed")
+
+   const ledMatrix = ledElements.value.map((led) => led.style.backgroundColor)
+
+   // if matrix is unchanged, do not update the matrix
+   if (JSON.stringify(ledMatrix) === previousMatrix) return
+
+   const byteStream = matrixToByteStream(ledMatrix)
    emit("writeValue", byteStream, "matrix")
+   previousMatrix = JSON.stringify(ledMatrix)
 }
 
 const matrixToByteStream = (ledMatrix) => {
