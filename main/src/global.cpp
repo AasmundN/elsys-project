@@ -61,6 +61,8 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
       *pHatParameter = "";
       for (int i = 0; i < value.length(); i++)
          *pHatParameter += value[i];
+      // Serial.print("New parameter value: ");
+      // Serial.println(*pHatParameter);
    }
 }
 
