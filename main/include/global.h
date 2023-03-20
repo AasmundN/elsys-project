@@ -22,7 +22,6 @@ extern uint8_t ledMatrix[ROWS][COLS][3];
 extern int ledMatrixIndices[ROWS][COLS];
 extern CRGB leds[ROWS*COLS];
 
-
 // Bluetooth utilities
 
 extern String state;
