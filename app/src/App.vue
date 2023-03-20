@@ -150,8 +150,8 @@ const writeCharacteristic = async (value, characteristic) => {
    if (!status.value) return
    try {
       debug1.value = characteristic
-      debug2.value = value.buffer
       debug3.value = characteristics[characteristic]
+      console.log(value)
       await characteristics[characteristic].writeValueWithResponse(value)
       if (characteristic === "matrix") {
          debug1.value = "Matrix updated"
@@ -159,6 +159,7 @@ const writeCharacteristic = async (value, characteristic) => {
    } catch (error) {
       console.error(error)
       debug1.value = "Something went wrong"
+      debug2.value = error
       message.value = "Noe gikk galt, prøv igjen!"
       snackbar.value = true
    }
