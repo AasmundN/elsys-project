@@ -78,15 +78,12 @@ const submit = async () => {
    // if matrix is unchanged, do not update the matrix
    if (JSON.stringify(ledMatrix) === previousMatrix) return
 
-   console.log("Start")
-
+   // must be here to allow the first emit to finish properly
    await new Promise((resolve, reject) => {
       setTimeout(() => {
          resolve()
-      }, 2000)
+      }, 100)
    })
-
-   console.log("End")
 
    const byteStream = matrixToByteStream(ledMatrix)
    emit("writeValue", byteStream, "matrix")
