@@ -9,6 +9,7 @@
          </v-overlay>
          <v-btn class="mx-2" color="red" @click="clearMatrix" prepend-icon="mdi-close"> Tøm </v-btn>
       </v-row>
+      {{ debug }}
       <v-row no-gutters justify="center" class="mt-10">
          <v-sheet
             class="pa-1 bg-grey-darken-4 rounded-lg matrixContainer"
@@ -59,6 +60,8 @@ const overlay = ref(false)
 const ledElements = ref([])
 const speed = ref(0)
 
+const debug = ref("")
+
 let previousMatrix
 
 const setLed = (event) => {
@@ -71,14 +74,17 @@ const setLed = (event) => {
 }
 
 const submit = async () => {
+   debug.value = "Submiting speed"
    emit("writeValue", enc.encode(speed.value), "speed")
 
    const ledMatrix = ledElements.value.map((led) => led.style.backgroundColor)
+   debug.value = ledMatrix
 
    // if matrix is unchanged, do not update the matrix
-   // if (JSON.stringify(ledMatrix) === previousMatrix) return
+   if (JSON.stringify(ledMatrix) === previousMatrix) return
 
    const byteStream = matrixToByteStream(ledMatrix)
+   debug.value = byteStream
    emit("writeValue", byteStream, "matrix")
    previousMatrix = JSON.stringify(ledMatrix)
 }

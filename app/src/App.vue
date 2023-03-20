@@ -142,6 +142,10 @@ const writeCharacteristic = async (value, characteristic) => {
    if (!status.value) return
    try {
       await characteristics[characteristic].writeValueWithResponse(value)
+      if (characteristic === "matrix") {
+         message.value = "Matrix updated"
+         snackbar.value = true
+      }
    } catch (error) {
       console.error(error)
       message.value = "Noe gikk galt, prøv igjen!"
