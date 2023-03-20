@@ -7,7 +7,9 @@
          </v-expansion-panel>
       </v-expansion-panels>
 
-      {{ debug }}
+      {{ debug1 }} <br />
+      {{ debug2 }} <br />
+      {{ debug3 }} <br />
 
       <v-main>
          <v-fade-transition leave-absolute>
@@ -77,7 +79,9 @@ const themeMode = ref(false)
 const mode = ref("sound")
 const theme = useTheme()
 
-const debug = ref()
+const debug1 = ref()
+const debug2 = ref()
+const debug3 = ref()
 
 let device, server, service
 let characteristics = {
@@ -143,18 +147,18 @@ const setMode = (newMode) => {
 }
 
 const writeCharacteristic = async (value, characteristic) => {
-   debug.value = "Sending value"
    if (!status.value) return
    try {
+      debug1.value = characteristic
+      debug2.value = value.buffer
+      debug3.value = characteristics[characteristic]
       await characteristics[characteristic].writeValueWithResponse(value)
       if (characteristic === "matrix") {
-         debug.value = "Matrix updated"
-         message.value = "Matrix updated"
-         snackbar.value = true
+         debug1.value = "Matrix updated"
       }
    } catch (error) {
       console.error(error)
-      debug.value = "Something went wrong"
+      debug1.value = "Something went wrong"
       message.value = "Noe gikk galt, prøv igjen!"
       snackbar.value = true
    }
