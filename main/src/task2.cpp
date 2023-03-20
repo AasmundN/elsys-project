@@ -1,12 +1,10 @@
 #include <global.h>
-#include <task2.h>
 
-unsigned long milliSecLastCheck = 0;
+unsigned long milliSecLastCheckShiftMatrix = 0;
 
 void shiftMatrix(){
-   //Kode som flytter rader en rad bortover
+   // create new, shifted matrix
    uint8_t newMatrix[ROWS][COLS][3];
-   // = ledMatrix[ROWS][COLS][3];
    for (int row = 0; row < ROWS; row++) {
       for (int col = 0; col < COLS; col++) {
          for (int k = 0; k<3; k++){
@@ -17,6 +15,7 @@ void shiftMatrix(){
          }
       }
    }
+   // update old matrix
    for (int row = 0; row < ROWS; row++) {
       for (int col = 0; col < COLS; col++) {
          for (int k = 0; k<3; k++){
@@ -26,17 +25,17 @@ void shiftMatrix(){
    }
 }
 
-
 void task2() {
-   if (state == "sound")
-      digitalWrite(LED, HIGH);
-   else if (state == "matrix") {
+   // check which mode the hat is in
+   if (state == "sound") {
       
-      int speedInt = speed.toInt() * 100; 
-      if ((millis() > (milliSecLastCheck + 600 - speedInt)) && (speedInt > 0)) {
+   } else if (state == "motion") {
+
+   } else if (state == "matrix") {
+      int speedInt = speed.toInt(); 
+      if ((millis() > (milliSecLastCheckShiftMatrix+600-speedInt*100)) && (speedInt > 0)) {
          shiftMatrix();
-         milliSecLastCheck = millis();
+         milliSecLastCheckShiftMatrix = millis();
       }
-   } else
-      digitalWrite(LED, LOW);  
+   } 
 }
