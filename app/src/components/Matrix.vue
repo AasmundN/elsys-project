@@ -76,7 +76,7 @@ const submit = async () => {
    const ledMatrix = ledElements.value.map((led) => led.style.backgroundColor)
 
    // if matrix is unchanged, do not update the matrix
-   if (JSON.stringify(ledMatrix) === previousMatrix) return
+   // if (JSON.stringify(ledMatrix) === previousMatrix) return
 
    const byteStream = matrixToByteStream(ledMatrix)
    emit("writeValue", byteStream, "matrix")
