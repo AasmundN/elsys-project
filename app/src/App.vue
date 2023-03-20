@@ -7,6 +7,8 @@
          </v-expansion-panel>
       </v-expansion-panels>
 
+      {{ debug }}
+
       <v-main>
          <v-fade-transition leave-absolute>
             <Connect v-if="!status" :connecting="connecting" @connect="connectDevice" />
@@ -75,6 +77,8 @@ const themeMode = ref(false)
 const mode = ref("sound")
 const theme = useTheme()
 
+const debug = ref()
+
 let device, server, service
 let characteristics = {
    mode: null,
@@ -139,15 +143,18 @@ const setMode = (newMode) => {
 }
 
 const writeCharacteristic = async (value, characteristic) => {
+   debug.value = "Sending value"
    if (!status.value) return
    try {
       await characteristics[characteristic].writeValueWithResponse(value)
       if (characteristic === "matrix") {
+         debug.value = "Matrix updated"
          message.value = "Matrix updated"
          snackbar.value = true
       }
    } catch (error) {
       console.error(error)
+      debug.value = "Something went wrong"
       message.value = "Noe gikk galt, prøv igjen!"
       snackbar.value = true
    }
