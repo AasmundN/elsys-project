@@ -129,6 +129,7 @@ const onDisconnect = () => {
       mode: null,
       color: null,
       matrix: null,
+      speed: null,
    }
 }
 
@@ -139,19 +140,12 @@ const setMode = (newMode) => {
 
 const writeCharacteristic = async (value, characteristic) => {
    if (!status.value) return
-   await characteristics[characteristic].writeValueWithResponse(value)
+   try {
+      await characteristics[characteristic].writeValueWithResponse(value)
+   } catch (error) {
+      console.error(error)
+      message.value = "Noe gikk galt, prøv igjen!"
+      snackbar.value = true
+   }
 }
 </script>
-
-<style scoped>
-/* we will explain what these classes do next! */
-.v-enter-active,
-.v-leave-active {
-   transition: opacity 0.5s ease;
-}
-
-.v-enter-from,
-.v-leave-to {
-   opacity: 0;
-}
-</style>

@@ -40,8 +40,6 @@ const submit = () => {
       .match(/.{1,2}/g)
       .map((val) => parseInt(val, 16))
 
-   colorIntArr.pop()
-
-   emit("writeValue", colorIntArr.join(","))
+   emit("writeValue", colorIntArr.slice(0, 3).join(","))
 }
 </script>
