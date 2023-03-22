@@ -43,6 +43,7 @@
             :min="-5"
             :max="5"
             :step="1"
+            show-ticks="always"
             style="max-width: 400px"></v-slider>
       </v-row>
 
