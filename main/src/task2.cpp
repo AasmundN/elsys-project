@@ -8,7 +8,7 @@ void shiftMatrix() {
    
    for (int row = 0; row < ROWS; row++) {
       for (int col = 0; col < COLS; col++) {
-         for (int k = 0; k<3; k++){
+         for (int k = 0; k<3; k++) {
             newMatrix[row][col+1][k] = ledMatrix[row][col][k];
             if (col == COLS-1) {
                newMatrix[row][0][k] = ledMatrix[row][col][k];
@@ -19,7 +19,7 @@ void shiftMatrix() {
    // update old matrix
    for (int row = 0; row < ROWS; row++) {
       for (int col = 0; col < COLS; col++) {
-         for (int k = 0; k<3; k++){
+         for (int k = 0; k<3; k++) {
             ledMatrix[row][col][k] = newMatrix[row][col][k];
          }
       }

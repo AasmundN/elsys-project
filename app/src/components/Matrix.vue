@@ -78,11 +78,11 @@ const submit = async () => {
    // if matrix is unchanged, do not update the matrix
    if (JSON.stringify(ledMatrix) === previousMatrix) return
 
-   // must be here to allow the first emit to finish properly
+   // give the bluetooth stack time to get ready for new transmission
    await new Promise((resolve, reject) => {
       setTimeout(() => {
          resolve()
-      }, 100)
+      }, 150)
    })
 
    const byteStream = matrixToByteStream(ledMatrix)
