@@ -9,6 +9,7 @@
          </v-overlay>
          <v-btn class="mx-2" color="red" @click="clearMatrix" prepend-icon="mdi-close"> Tøm </v-btn>
       </v-row>
+
       <v-row no-gutters justify="center" class="mt-10">
          <v-sheet
             class="pa-1 bg-grey-darken-4 rounded-lg matrixContainer"
@@ -29,12 +30,23 @@
             </v-row>
          </v-sheet>
       </v-row>
-      <v-row no-gutters justify="center" class="mt-10">
-         <v-col style="max-width: 400px" class="mx-6">
-            <v-slider thumb-label v-model="speed" :min="0" :max="5" :step="1"></v-slider>
-         </v-col>
+
+      <v-row v-if="mobile" no-gutters justify="center" class="mt-5">
+         <v-chip class="ma-2" closable label> Dra til høyre for å se hele matrisen </v-chip>
       </v-row>
-      <v-row no-gutters justify="center" class="my-6">
+
+      <v-row no-gutters justify="center" class="mt-5 mx-4">
+         <v-chip> Hastighet </v-chip>
+         <v-slider
+            thumb-label
+            v-model="speed"
+            :min="-5"
+            :max="5"
+            :step="1"
+            style="max-width: 400px"></v-slider>
+      </v-row>
+
+      <v-row no-gutters justify="center" class="my-3">
          <v-btn color="success" @click="submit" prepend-icon="mdi-cloud-upload">
             Send til hatt!
          </v-btn>
@@ -50,10 +62,9 @@ import { useDisplay } from "vuetify/lib/framework.mjs"
 const matrixSize = { x: 19, y: 8 }
 const enc = new TextEncoder()
 
-const { width } = useDisplay()
+const { width, mobile } = useDisplay()
 
 const emit = defineEmits(["writeValue"])
-const word = ref("")
 const color = ref("")
 const overlay = ref(false)
 const ledElements = ref([])
@@ -114,13 +125,8 @@ const clearMatrix = () => {
 
 <style scoped>
 .matrixContainer {
-   overflow: scroll;
+   overflow-x: scroll;
 }
-
-.matrixContainer::-webkit-scrollbar {
-   display: none; /* for Chrome, Safari, and Opera */
-}
-
 .led {
    border-radius: 50%;
    box-sizing: border-box;
