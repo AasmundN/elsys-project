@@ -96,7 +96,7 @@ void setupTasks(TaskHandle_t Task1, TaskHandle_t Task2, TaskHandle_t Task3) {
 }
 
 void setupBluetooth() {
-   BLEDevice::init("ESP32");
+   BLEDevice::init("Hatt");
 
    // start server
    pServer = BLEDevice::createServer();

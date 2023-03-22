@@ -2,16 +2,30 @@
 
 unsigned long milliSecLastCheckShiftMatrix = 0;
 
-void shiftMatrix() {
+void shiftMatrix(int diraction) {
    // create new, shifted matrix
    uint8_t newMatrix[ROWS][COLS][3];
-   
-   for (int row = 0; row < ROWS; row++) {
-      for (int col = 0; col < COLS; col++) {
-         for (int k = 0; k<3; k++) {
-            newMatrix[row][col+1][k] = ledMatrix[row][col][k];
-            if (col == COLS-1) {
-               newMatrix[row][0][k] = ledMatrix[row][col][k];
+   if (diraction > 0) { // shift right
+      for (int row = 0; row < ROWS; row++) {
+         for (int col = 0; col < COLS; col++) {
+            for (int k = 0; k<3; k++) {
+               if (col == COLS-1) {
+                  newMatrix[row][0][k] = ledMatrix[row][col][k];
+               }
+               else { newMatrix[row][col+1][k] = ledMatrix[row][col][k];
+               }
+            }
+         }
+      }
+   } else { // shift left
+      for (int row = 0; row < ROWS; row++) {
+         for (int col = 0; col < COLS; col++) {
+            for (int k = 0; k<3; k++) {
+               if (col == 0) {
+                  newMatrix[row][COLS-1][k] = ledMatrix[row][col][k];
+               }
+               else {newMatrix[row][col-1][k] = ledMatrix[row][col][k];
+               }
             }
          }
       }
@@ -33,9 +47,10 @@ void task2() {
    } else if (state == "motion") {
 
    } else if (state == "matrix") {
+
       int speedInt = speed.toInt(); 
-      if ((millis() > (milliSecLastCheckShiftMatrix+600-speedInt*100)) && (speedInt > 0)) {
-         shiftMatrix();
+      if ((millis() > (milliSecLastCheckShiftMatrix+600-(abs(speedInt)*100))) && (speedInt != 0)) {
+         shiftMatrix(speedInt/abs(speedInt));
          milliSecLastCheckShiftMatrix = millis();
       }
    } 
