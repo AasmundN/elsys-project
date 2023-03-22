@@ -1,16 +1,12 @@
 <template>
    <v-container class="pa-0">
       <v-row no-gutters justify="center">
-         <v-btn :color="color" @click="overlay = !overlay" class="mx-2"> Velg farge </v-btn>
-         <v-overlay v-model="overlay" class="d-flex justify-center align-center">
-            <v-row no-gutters justify="center" align-content="center">
-               <v-color-picker v-model="color"></v-color-picker>
-            </v-row>
-         </v-overlay>
-         <v-btn class="mx-2" color="red" @click="clearMatrix" prepend-icon="mdi-close"> Tøm </v-btn>
+         <v-btn color="success" @click="submit" prepend-icon="mdi-cloud-upload">
+            Oppdater hatt
+         </v-btn>
       </v-row>
 
-      <v-row no-gutters justify="center" class="mt-10">
+      <v-row no-gutters justify="center" class="mt-5">
          <v-sheet
             class="pa-1 bg-grey-darken-4 rounded-lg matrixContainer"
             :style="{ maxWidth: 0.9 * width + 'px' }">
@@ -35,7 +31,26 @@
          <v-chip class="ma-2" closable label> Dra til høyre for å se hele matrisen </v-chip>
       </v-row>
 
-      <v-row no-gutters justify="center" class="mt-5 mx-4">
+      <v-row no-gutters justify="center" class="mt-5">
+         <v-btn :color="color" @click="overlay = !overlay" class="mx-2"> Endre farge </v-btn>
+         <v-overlay v-model="overlay" class="d-flex justify-center align-center">
+            <v-row no-gutters justify="center" align-content="center">
+               <v-color-picker v-model="color" mode="rgb" :modes="['rgb']"></v-color-picker>
+            </v-row>
+         </v-overlay>
+         <v-btn
+            @click="
+               () => {
+                  selectSpeed = !selectSpeed
+                  speed = 0
+               }
+            "
+            :color="selectSpeed ? 'grey-lighten-2' : 'default'">
+            Animer
+         </v-btn>
+         <v-btn class="mx-2" color="red" @click="clearMatrix" prepend-icon="mdi-close"> Tøm </v-btn>
+      </v-row>
+      <v-row v-if="selectSpeed" no-gutters justify="center" class="mt-5 px-3">
          <v-chip> Hastighet </v-chip>
          <v-slider
             thumb-label
@@ -44,13 +59,7 @@
             :max="5"
             :step="1"
             show-ticks="always"
-            style="max-width: 400px"></v-slider>
-      </v-row>
-
-      <v-row no-gutters justify="center" class="my-3">
-         <v-btn color="success" @click="submit" prepend-icon="mdi-cloud-upload">
-            Send til hatt!
-         </v-btn>
+            style="max-width: 400px" />
       </v-row>
    </v-container>
 </template>
@@ -66,10 +75,11 @@ const enc = new TextEncoder()
 const { width, mobile } = useDisplay()
 
 const emit = defineEmits(["writeValue"])
-const color = ref("")
+const color = ref("#0A2237")
 const overlay = ref(false)
 const ledElements = ref([])
 const speed = ref(0)
+const selectSpeed = ref(false)
 
 let previousMatrix
 
@@ -126,7 +136,7 @@ const clearMatrix = () => {
 
 <style scoped>
 .matrixContainer {
-   overflow-x: scroll;
+   overflow: scroll;
 }
 .led {
    border-radius: 50%;

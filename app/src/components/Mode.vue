@@ -1,8 +1,5 @@
 <template>
-   <v-container fluid class="pa-0 pb-10">
-      <v-row no-gutters justify="center" class="pa-8">
-         <p class="text-center">Du er koblet til hatten! Bruk menyen under for å velge modus.</p>
-      </v-row>
+   <v-container fluid class="pa-0 pb-10 mt-10">
       <v-row no-gutters justify="center">
          <v-btn
             :variant="mode === 'sound' ? 'tonal' : 'plain'"

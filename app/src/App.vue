@@ -1,10 +1,16 @@
 <template>
    <v-app h-screen>
       <v-expansion-panels>
-         <v-expansion-panel
-            title="Swizz party hatt!"
-            text="Dette er en kort beskrivelse av hva Hatten er, hvordan man bruker den, og hvorfor man bruker den. Vi håper at alt er gøy og trivelig og at ingenting slutter å virke.">
-         </v-expansion-panel>
+         <v-sheet
+            width="100vw"
+            height="36px"
+            style="box-sizing: content-box"
+            class="pa-2 d-flex justify-space-between align-center">
+            <v-chip>Partyhatt</v-chip>
+            <v-btn v-if="status" @click="disconnectDevice" color="red" height="100%"
+               >Koble fra hatt</v-btn
+            >
+         </v-sheet>
       </v-expansion-panels>
 
       <v-main>
@@ -24,15 +30,6 @@
                @write-value="(newColor) => writeCharacteristic(enc.encode(newColor), 'color')" />
          </v-fade-transition>
       </v-main>
-
-      <div class="d-flex justify-center align-center px-5 py-2">
-         <v-switch
-            v-model="themeMode"
-            @update:model-value="toggleTheme"
-            hide-details
-            inset></v-switch>
-         <v-btn v-if="status" @click="disconnectDevice" color="red">Koble fra hatt</v-btn>
-      </div>
 
       <v-snackbar v-model="snackbar" :timeout="4000">
          {{ message }}
