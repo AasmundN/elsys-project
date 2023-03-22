@@ -82,7 +82,7 @@ const submit = async () => {
    await new Promise((resolve, reject) => {
       setTimeout(() => {
          resolve()
-      }, 150)
+      }, 200)
    })
 
    const byteStream = matrixToByteStream(ledMatrix)
