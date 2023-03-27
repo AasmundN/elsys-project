@@ -1,10 +1,17 @@
-#include <Arduino.h>
-
 #include <global.h>
 
 void task1() {
-   if (write_led)
-      digitalWrite(LED, HIGH);  
-   else
-      digitalWrite(LED, LOW);
+   // disconnecting
+   if (!deviceConnected && oldDeviceConnected) {
+      delay(500); // give the bluetooth stack the chance to get things ready
+      pServer->startAdvertising(); // restart advertising
+      Serial.println("Device disconnected, restarting advertising");
+      oldDeviceConnected = deviceConnected;
+   }
+   // connecting
+   if (deviceConnected && !oldDeviceConnected) {
+      // do stuff here on connecting
+      Serial.println("Device connected");
+      oldDeviceConnected = deviceConnected;
+   }
 }
