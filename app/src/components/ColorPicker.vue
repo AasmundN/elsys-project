@@ -4,7 +4,7 @@
          <p class="text-center">Under kan du velge fargen på lysene.</p>
       </v-row>
       <v-row no-gutters justify="center">
-         <v-color-picker v-model="color"></v-color-picker>
+         <v-color-picker v-model="color" mode="rgb" :modes="['rgb']"></v-color-picker>
       </v-row>
       <v-row no-gutters justify="center" class="mt-10">
          <v-btn color="success" @click="submit" prepend-icon="mdi-cloud-upload">
@@ -12,7 +12,7 @@
          </v-btn>
       </v-row>
       <v-snackbar v-model="snackbar" :timeout="4000">
-         Du må velge en farge!
+         Du må velge en farge
 
          <template v-slot:actions>
             <v-btn color="blue" variant="text" @click="snackbar = false"> Lukk </v-btn>
@@ -24,7 +24,7 @@
 <script setup>
 import { ref } from "vue"
 
-const color = ref()
+const color = ref("#FF0000")
 const snackbar = ref(false)
 
 const emit = defineEmits(["writeValue"])

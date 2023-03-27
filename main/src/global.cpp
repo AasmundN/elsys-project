@@ -24,7 +24,7 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
    String* pHatParameter = NULL;
 
    // if the charactiristic is matrix
-   if (strcmp(uuid, MATRIX_CHARACTERISTIC_UUID) == 0){ 
+   if (strcmp(uuid, MATRIX_CHARACTERISTIC_UUID) == 0) { 
       uint8_t* byteStream = pCharacteristic->getData();
       size_t length = pCharacteristic->getLength();
 

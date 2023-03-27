@@ -9,7 +9,7 @@
       <v-row no-gutters justify="center" class="mt-5">
          <v-sheet
             class="pa-1 bg-grey-darken-4 rounded-lg matrixContainer"
-            :style="{ maxWidth: 0.9 * width + 'px' }">
+            :style="{ maxWidth: 0.9 * width + 'px', overflow: mobile ? 'scroll' : 'hidden' }">
             <v-row no-gutters style="flex-wrap: nowrap" v-for="i in matrixSize.y" :key="i">
                <v-col
                   v-for="j in matrixSize.x"
@@ -50,17 +50,19 @@
          </v-btn>
          <v-btn class="mx-2" color="red" @click="clearMatrix" prepend-icon="mdi-close"> Tøm </v-btn>
       </v-row>
-      <v-row v-if="selectSpeed" no-gutters justify="center" class="mt-5 px-3">
-         <v-chip> Hastighet </v-chip>
-         <v-slider
-            thumb-label
-            v-model="speed"
-            :min="-5"
-            :max="5"
-            :step="1"
-            show-ticks="always"
-            style="max-width: 400px" />
-      </v-row>
+      <v-fade-transition>
+         <v-row v-if="selectSpeed" no-gutters justify="center" class="mt-5 px-3">
+            <v-chip> Hastighet </v-chip>
+            <v-slider
+               thumb-label
+               v-model="speed"
+               :min="-5"
+               :max="5"
+               :step="1"
+               show-ticks="always"
+               style="max-width: 400px" />
+         </v-row>
+      </v-fade-transition>
    </v-container>
 </template>
 
@@ -135,13 +137,10 @@ const clearMatrix = () => {
 </script>
 
 <style scoped>
-.matrixContainer {
-   overflow: scroll;
-}
 .led {
    border-radius: 50%;
    box-sizing: border-box;
-   border: 2px #757575 solid;
+   border: 3px #757575 solid;
 }
 
 .ledContainer {
@@ -149,6 +148,6 @@ const clearMatrix = () => {
 }
 
 .ledContainer:hover .led {
-   border: 2px white solid;
+   border: 3px white solid;
 }
 </style>
