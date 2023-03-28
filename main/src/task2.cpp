@@ -1,6 +1,11 @@
 #include <global.h>
+#include <ESP32_fft.h>
 
 unsigned long milliSecLastCheckShiftMatrix = 0;
+
+unsigned long refreshTimeDoFFT = 30;
+unsigned long milliSecLastCheckDoFFT = 0;
+//Definer FFT-variabler her
 
 void shiftMatrix(int direction) {
    // create new, shifted matrix
@@ -42,10 +47,23 @@ void shiftMatrix(int direction) {
    }
 }
 
+void readSoundData() {
+
+}
+
+void doFFT() {
+   
+}
+
+
+
 void task2() {
    // check which mode the hat is in
    if (state == "sound") {
-      
+      if (millis() > milliSecLastCheckDoFFT + refreshTimeDoFFT) {
+         doFFT();
+         milliSecLastCheckDoFFT = millis();
+      }  
    } else if (state == "motion") {
 
    } else if (state == "matrix") {
