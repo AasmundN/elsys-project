@@ -2,12 +2,31 @@
 #include <global.h>
 
 String state = "sound";
-String color = "";
-String speed = "";
+String color = "255,0,0";
+String speed = "0";
 
 uint8_t ledMatrix[ROWS][COLS][3];
 int ledMatrixIndices[ROWS][COLS];
 CRGB leds[ROWS*COLS];
+
+bool updatingMatrix = false;
+
+void updateMatrix() {
+   //Kode som oppdaterer led matrise
+   for (int row = 0; row < ROWS; row++) {
+      for (int col = 0; col < COLS; col++) {
+         // get new LED color values
+         uint8_t red = ledMatrix[row][col][0];
+         uint8_t green = ledMatrix[row][col][1];
+         uint8_t blue = ledMatrix[row][col][2];
+
+         // update LED color values
+         leds[ledMatrixIndices[row][col]] = CRGB(red, green, blue);
+      }
+   }
+
+   FastLED.show();
+}
 
 BLEServer* pServer = NULL;
 BLECharacteristic* pStatusCharacteristic = NULL;
@@ -24,7 +43,10 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
    String* pHatParameter = NULL;
 
    // if the charactiristic is matrix
-   if (strcmp(uuid, MATRIX_CHARACTERISTIC_UUID) == 0){ 
+   if (strcmp(uuid, MATRIX_CHARACTERISTIC_UUID) == 0) { 
+
+      updatingMatrix = true;
+
       uint8_t* byteStream = pCharacteristic->getData();
       size_t length = pCharacteristic->getLength();
 
@@ -33,14 +55,18 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
       for (int row = 0; row<ROWS; row++) {
          for (int col = 0; col<COLS; col++) {
             for (int k = 0; k<3; k++){
-               // Serial.print(arrIndex);
-               // Serial.print(": ");
-               // Serial.println(byteStream[arrIndex]);
+               Serial.print(arrIndex);
+               Serial.print(": ");
+               Serial.println(byteStream[arrIndex]);
                ledMatrix[row][col][k] = byteStream[arrIndex];
                arrIndex++;
             }
          }
       }
+
+      updateMatrix();
+
+      updatingMatrix = false;
       return;
    }
 
@@ -61,8 +87,8 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
       *pHatParameter = "";
       for (int i = 0; i < value.length(); i++)
          *pHatParameter += value[i];
-      // Serial.print("New parameter value: ");
-      // Serial.println(*pHatParameter);
+      Serial.print("New parameter value: ");
+      Serial.println(*pHatParameter);
    }
 }
 

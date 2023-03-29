@@ -105,6 +105,8 @@ const connectDevice = async () => {
 
       status.value = true
       connecting.value = false
+
+      setMode(mode.value)
    } catch (error) {
       connecting.value = false
       message.value = "Noe gikk galt, prøv igjen!"
