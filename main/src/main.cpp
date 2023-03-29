@@ -7,7 +7,6 @@
 
 TaskHandle_t Task1;
 TaskHandle_t Task2;
-TaskHandle_t Task3;
 
 // void setup
 void setup() {
@@ -23,7 +22,7 @@ void setup() {
    // setup functions
    setupMatrix();
    setupBluetooth();
-   setupTasks(Task1, Task2, Task3);
+   setupTasks(Task1, Task2);
 
    // setup built in LED
    pinMode(LED, OUTPUT);

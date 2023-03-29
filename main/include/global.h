@@ -22,11 +22,15 @@ extern uint8_t ledMatrix[ROWS][COLS][3];
 extern int ledMatrixIndices[ROWS][COLS];
 extern CRGB leds[ROWS*COLS];
 
+void updateMatrix();
+
 // Bluetooth utilities
 
 extern String state;
 extern String color;
 extern String speed;
+
+extern bool updatingMatrix;
 
 #define SERVICE_UUID                 "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 #define STATUS_CHARACTERISTIC_UUID   "beb5483e-36e1-4688-b7f5-ea07361b26a8"

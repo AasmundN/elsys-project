@@ -1,9 +1,10 @@
 #include <global.h>
 #include <ESP32_fft.h>
 
+unsigned long refreshTimeShiftMatrix;
 unsigned long milliSecLastCheckShiftMatrix = 0;
 
-unsigned long refreshTimeDoFFT = 30;
+unsigned long refreshTimeDoFFT = 100;
 unsigned long milliSecLastCheckDoFFT = 0;
 
 //Sampling
@@ -158,9 +159,14 @@ void task2() {
 
    } else if (state == "matrix") {
       int speedInt = speed.toInt(); 
-      if ((millis() > (milliSecLastCheckShiftMatrix+600-(abs(speedInt)*100))) && (speedInt != 0)) {
+      if (!speedInt) return;
+
+      refreshTimeShiftMatrix = 700 - (abs(speedInt)*200);
+
+      if (millis() > milliSecLastCheckShiftMatrix + refreshTimeShiftMatrix && !updatingMatrix) {
          shiftMatrix(speedInt/abs(speedInt));
+         updateMatrix();
          milliSecLastCheckShiftMatrix = millis();
-      }
+      }  
    } 
 }
