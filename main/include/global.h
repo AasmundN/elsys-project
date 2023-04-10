@@ -5,13 +5,22 @@
 #include <BLEUtils.h>
 #include <BLEServer.h>
 #include <FastLED.h>
-
+#include "ADCSampler.h"
 
 // IO utilities
 
 #define LED_PIN 5
 #define LED 2
+#define AUDIO_IN_PIN 35 
 
+// I2S utilities
+
+#define I2S_SAMPLE_RATE 20000
+#define SAMPLE_SIZE  256
+
+extern ADCSampler *adcSampler;
+extern int16_t *samples;   
+extern I2SSampler *sampler;   
 
 // led matrix utilities
 

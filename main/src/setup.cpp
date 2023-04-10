@@ -36,6 +36,15 @@ void Task2code( void* pvParameters ) {
    Serial.print("Task2 running on core ");
    Serial.println(xPortGetCoreID());
 
+   // serup I2S sampler
+   sampler = (I2SSampler *)pvParameters;
+   samples = (int16_t *)malloc(sizeof(uint16_t) * SAMPLE_SIZE);
+
+   if (!samples) {
+      Serial.println("Failed to allocate memory for samples");
+      return;
+   }
+
    for(;;) {
       // task 2 code
       task2();
@@ -63,7 +72,7 @@ void setupTasks(TaskHandle_t Task1, TaskHandle_t Task2) {
                   Task2code,   /* Task function. */
                   "Task2",     /* name of task. */
                   10000,       /* Stack size of task */
-                  NULL,        /* parameter of the task */
+                  adcSampler,        /* parameter of the task */
                   1,           /* priority of the task */
                   &Task2,      /* Task handle to keep track of created task */
                   1);          /* pin task to core 1 */
