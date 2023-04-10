@@ -24,6 +24,9 @@ void setup() {
    setupBluetooth();
    setupTasks(Task1, Task2);
 
+   // setup microphone pin
+   pinMode(AUDIO_IN_PIN, INPUT);
+
    // setup built in LED
    pinMode(LED, OUTPUT);
    digitalWrite(LED, LOW);

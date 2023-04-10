@@ -11,6 +11,7 @@
 
 #define LED_PIN 5
 #define LED 2
+#define AUDIO_IN_PIN 35 
 
 
 // led matrix utilities
