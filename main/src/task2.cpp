@@ -1,10 +1,12 @@
 #include <global.h>
 #include <ESP32_fft.h>
+#include <string>
+#include <Arduino.h>
 
 unsigned long refreshTimeShiftMatrix;
 unsigned long milliSecLastCheckShiftMatrix = 0;
 
-unsigned long refreshTimeDoFFT = 100;
+unsigned long refreshTimeDoFFT = 10;
 unsigned long milliSecLastCheckDoFFT = 0;
 
 //Sampling
@@ -17,7 +19,7 @@ float fft_output[FFT_N];
 ESP_fft FFT(FFT_N, SAMPLEFREQ, FFT_REAL, FFT_FORWARD, fft_input, fft_output);
 
 //LED-index from FFT
-#define NUM_LEDS 30;
+#define NUM_LEDS 8
 const int max_value = 28000;
 int led_intervall = max_value/NUM_LEDS;
 const int num_of_bands = 8;
@@ -176,8 +178,6 @@ void doFFT() {
       amplitude_array[7] = 0;
    }
 
-
-
    Serial.print(samples_read); Serial.print(" ------- ");
 
    Serial.print(amplitude_array[0]); Serial.print("; ");
@@ -189,7 +189,27 @@ void doFFT() {
    Serial.print(amplitude_array[6]); Serial.print("; ");
    Serial.print(amplitude_array[7]); Serial.println("; ");
 
+/*
+   int colors[3];
+   int index1 = color.indexOf(',');
+   colors[0] = std::stoi(color.substring(index1));
+   int index2 = color.indexOf(',', index1 +1);
+   colors[1] = std::stoi(color.substring(index1 + 1, index2));
+   colors[2] = std::stoi(color.substring(index2 + 1));
 
+*/
+
+   for (int columns = 0; columns < 8; ++columns) {
+      for (int rows = 0; rows < ROWS; ++rows) {
+         for (int k = 0; k < 3; ++k) {
+            if (rows < (NUM_LEDS - static_cast<int>(amplitude_array[columns]))) {
+               ledMatrix[rows][columns][k] = 0;
+            } else {
+               ledMatrix[rows][columns][k] = 20;
+            }
+         }
+      }
+   }
 }
 
 void task2() {
@@ -197,6 +217,7 @@ void task2() {
    if (state == "sound") {
       if (millis() > milliSecLastCheckDoFFT + refreshTimeDoFFT) {
          doFFT();
+         updateMatrix();
          milliSecLastCheckDoFFT = millis();
       }  
    } else if (state == "motion") {
