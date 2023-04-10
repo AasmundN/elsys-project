@@ -5,6 +5,10 @@ String state = "sound";
 String color = "255,0,0";
 String speed = "0";
 
+ADCSampler *adcSampler = NULL;
+int16_t *samples = NULL;   
+I2SSampler *sampler = NULL; 
+
 uint8_t ledMatrix[ROWS][COLS][3];
 int ledMatrixIndices[ROWS][COLS];
 CRGB leds[ROWS*COLS];
