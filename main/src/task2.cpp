@@ -48,9 +48,10 @@ void shiftMatrix(int direction) {
 }
 
 void doFFT() {
-
+   // sample read test
+   int samples_read = sampler->read(samples, SAMPLE_SIZE);
+   Serial.println(samples[0]);
 }
-
 
 void task2() {
    // check which mode the hat is in
