@@ -1,6 +1,6 @@
 #include <global.h>
 #include <setup.h>
-#include <task2.h>
+#include <modeTask.h>
 
 // setup led matrix
 void setupMatrix() {
@@ -18,8 +18,8 @@ void setupMatrix() {
    Serial.println("LED setup done");
 }
 
-void Task2code( void* pvParameters ) {
-   Serial.print("Task2 running on core ");
+void modeTaskcode( void* pvParameters ) {
+   Serial.print("modeTask running on core ");
    Serial.println(xPortGetCoreID());
 
    // setup I2S sampler
@@ -34,23 +34,23 @@ void Task2code( void* pvParameters ) {
    for(;;) {
       // task 2 code
       // Serial.println("Task 2 running");
-      task2();
+      modeTask();
       // do not remove delay: 
       // https://stackoverflow.com/questions/66278271/task-watchdog-got-triggered-the-tasks-did-not-reset-the-watchdog-in-time
       vTaskDelay(10/portTICK_PERIOD_MS);
    }
 }
 
-void setupTasks(TaskHandle_t Task2) {
+void setupTasks(TaskHandle_t modeTask) {
 
-   //create a task that will be executed in the Task2code() function, with priority 1 and executed on core 1
+   //create a task that will be executed in the modeTaskcode() function, with priority 1 and executed on core 1
    xTaskCreatePinnedToCore(
-                  Task2code,   /* Task function. */
-                  "Task2",     /* name of task. */
+                  modeTaskcode,   /* Task function. */
+                  "modeTask",     /* name of task. */
                   1000,       /* Stack size of task */
                   adcSampler,  /* parameter of the task */
                   1,           /* priority of the task */
-                  &Task2,      /* Task handle to keep track of created task */
+                  &modeTask,      /* Task handle to keep track of created task */
                   0);          /* pin task to core 1 */
    delay(500); 
 

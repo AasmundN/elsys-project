@@ -5,7 +5,7 @@
 #include <setup.h>
 #include <global.h>
 
-TaskHandle_t Task2;
+TaskHandle_t modeTask;
 
 i2s_config_t i2s_config = {
    .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX | I2S_MODE_ADC_BUILT_IN),
@@ -42,7 +42,7 @@ void setup() {
    // setup functions
    setupMatrix();
    setupBluetooth();
-   setupTasks(Task2);
+   setupTasks(modeTask);
 
    // setup microphone pin
    pinMode(AUDIO_IN_PIN, INPUT);
