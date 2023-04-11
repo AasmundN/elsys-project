@@ -1,6 +1,5 @@
 #include <global.h>
 #include <ESP32_fft.h>
-#include <string>
 #include <Arduino.h>
 
 unsigned long refreshTimeShiftMatrix;
@@ -10,7 +9,7 @@ unsigned long refreshTimeDoFFT = 10;
 unsigned long milliSecLastCheckDoFFT = 0;
 
 //Sampling
-#define FFT_N 256 // Hvis høyere tar samplingen for lang tid 
+#define FFT_N 256 
 #define SAMPLEFREQ 20000  
 
 //FFT
@@ -20,14 +19,16 @@ ESP_fft FFT(FFT_N, SAMPLEFREQ, FFT_REAL, FFT_FORWARD, fft_input, fft_output);
 
 //LED-index from FFT
 #define NUM_LEDS 8
-const int max_value = 28000;
+const int max_value = 25000;
+const int max_freq = 6000;
+const int min_freq = 100;
+const int num_of_bands = 19;
+const int freq_intervall = max_freq / num_of_bands;
 int led_intervall = max_value/NUM_LEDS;
-const int num_of_bands = 8;
 
 float amplitude_array[num_of_bands];
-int k1 = 0, k2 = 0, k3 = 0, k4 = 0, k5 = 0, k6 = 0, k7 = 0, k8 = 0;
-int sum_band_1 = 0, sum_band_2 = 0, sum_band_3 = 0, sum_band_4 = 0, sum_band_5 = 0, sum_band_6 = 0, sum_band_7 = 0, sum_band_8  = 0;
-
+int counters[num_of_bands];
+int sums[num_of_bands];
 
 void shiftMatrix(int direction) {
    // create new, shifted matrix
@@ -70,142 +71,173 @@ void shiftMatrix(int direction) {
 }
 
 void doFFT() {
+   //Reset counters
+   for (int i = 0; i < num_of_bands; ++i) {
+      counters[i] = 0;
+      sums[i] = 0;
+   }
 
-   //Resetter counters
-   k1 = 0; k2 = 0; k3 = 0; k4 = 0; k5 = 0; k6 = 0; k7 = 0; k8 = 0;
-   sum_band_1 = 0; sum_band_2 = 0; sum_band_3 = 0; sum_band_4 = 0; sum_band_5 = 0; sum_band_6 = 0; sum_band_7 = 0; sum_band_8 = 0;
-
-   //Sampler data og lagrer i fft_signal
+   //Samples data and saves in samples
    int samples_read = sampler->read(samples, SAMPLE_SIZE);
 
-   //Flytter data til fft_input
+   //Move data to fft_input
    for (int k = 0; k < samples_read; ++k) {
       fft_input[k] = (float)samples[k];
    }
 
-   // Execute transformation
+   //Execute transformation
    FFT.removeDC();
    FFT.hammingWindow();
    FFT.execute();
    FFT.complexToMagnitude();
 
-
+   //Add values to sums
    for (int i = 0; i < FFT_N; ++i) {
-      if (fft_output[i] < 28000) {
-         if (FFT.frequency(i) >= 100 && FFT.frequency(i) < 900) {
-            sum_band_1 += fft_output[i];
-            k1++;
-         } 
-         else if (FFT.frequency(i) >= 900 && FFT.frequency(i) < 1700) {
-            sum_band_2 += fft_output[i];
-            k2++;
-         } 
-         else if (FFT.frequency(i) >= 1700 && FFT.frequency(i) < 2500) {
-            sum_band_3 += fft_output[i];
-            k3++;
-         }
-         else if (FFT.frequency(i) >= 2500 && FFT.frequency(i) < 3300) {
-            sum_band_4 += fft_output[i];
-            k4++;
-         }
-         else if (FFT.frequency(i) >= 3300 && FFT.frequency(i) < 4100) {
-            sum_band_5 += fft_output[i];
-            k5++;
-         }
-         else if (FFT.frequency(i) >= 4100 && FFT.frequency(i) < 4900) {
-            sum_band_6 += fft_output[i];
-            k6++;
-         }
-         else if (FFT.frequency(i) >= 4900 && FFT.frequency(i) < 5700) {
-            sum_band_7 += fft_output[i];
-            k7++;
-         }
-         else if (FFT.frequency(i) >= 5700 && FFT.frequency(i) < 6500) {
-            sum_band_8 += fft_output[i]; 
-            k8++;
+      if (fft_output[i] < max_value) {
+         switch (static_cast<int>(FFT.frequency(i)))
+         {
+            case min_freq ... (min_freq + freq_intervall - 1):
+               sums[0] += fft_output[i];
+               counters[0]++;
+               break;
+
+            case (min_freq + freq_intervall) ... (min_freq + 2*freq_intervall- 1):
+               sums[1] += fft_output[i];
+               counters[1]++;
+               break; 
+            
+            case (min_freq + 2*freq_intervall) ... (min_freq + 3*freq_intervall - 1):
+               sums[2] += fft_output[i];
+               counters[2]++;
+               break; 
+
+            case (min_freq + 3*freq_intervall) ... (min_freq + 4*freq_intervall - 1):
+               sums[3] += fft_output[i];
+               counters[3]++;
+               break; 
+
+            case (min_freq + 4*freq_intervall) ... (min_freq + 5*freq_intervall - 1):
+               sums[4] += fft_output[i];
+               counters[4]++;
+               break;
+
+            case (min_freq + 5*freq_intervall) ... (min_freq + 6*freq_intervall - 1):
+               sums[5] += fft_output[i];
+               counters[5]++;
+               break; 
+
+            case (min_freq + 6*freq_intervall) ... (min_freq + 7*freq_intervall - 1):
+               sums[6] += fft_output[i];
+               counters[6]++;
+               break; 
+
+            case (min_freq + 7*freq_intervall) ... (min_freq + 8*freq_intervall - 1):
+               sums[7] += fft_output[i];
+               counters[7]++;
+               break; 
+
+            case (min_freq + 8*freq_intervall) ... (min_freq + 9*freq_intervall - 1):
+               sums[8] += fft_output[i];
+               counters[8]++;
+               break; 
+
+            case (min_freq + 9*freq_intervall) ... (min_freq + 10*freq_intervall - 1):
+               sums[9] += fft_output[i];
+               counters[9]++;
+               break; 
+
+            case (min_freq + 10*freq_intervall) ... (min_freq + 11*freq_intervall - 1):
+               sums[10] += fft_output[i];
+               counters[10]++;
+               break;           
+
+            case (min_freq + 11*freq_intervall) ... (min_freq + 12*freq_intervall - 1):
+               sums[11] += fft_output[i];
+               counters[11]++;
+               break; 
+
+            case (min_freq + 12*freq_intervall) ... (min_freq + 13*freq_intervall - 1):
+               sums[12] += fft_output[i];
+               counters[12]++;
+               break; 
+
+            case (min_freq + 13*freq_intervall) ... (min_freq + 14*freq_intervall - 1):
+               sums[13] += fft_output[i];
+               counters[13]++;
+               break; 
+
+            case (min_freq + 14*freq_intervall) ... (min_freq + 15*freq_intervall - 1):
+               sums[14] += fft_output[i];
+               counters[14]++;
+               break; 
+
+            case (min_freq + 15*freq_intervall) ... (min_freq + 16*freq_intervall - 1):
+               sums[15] += fft_output[i];
+               counters[15]++;
+               break; 
+
+            case (min_freq + 16*freq_intervall) ... (min_freq + 17*freq_intervall - 1):
+               sums[16] += fft_output[i];
+               counters[16]++;
+               break; 
+
+            case (min_freq + 17*freq_intervall) ... (min_freq + 18*freq_intervall - 1):
+               sums[17] += fft_output[i];
+               counters[17]++;
+               break; 
+
+            case (min_freq + 18*freq_intervall) ... (min_freq + 19*freq_intervall - 1):
+               sums[18] += fft_output[i];
+               counters[18]++;
+               break; 
+
+            case (min_freq + 19*freq_intervall) ... (min_freq + 20*freq_intervall - 1):
+               sums[19] += fft_output[i];
+               counters[19]++;
+               break; 
+
+            default:
+               break;
          }
       }
    }
 
-   //amplitude_array inneholder (kanskje) max_index
-   if (k1 != 0) {
-      amplitude_array[0] = sum_band_1 / (k1*led_intervall); 
-   } else {
-      amplitude_array[0] = 0; 
+   //Calculate indexes and saves inn amplitude_array
+   for (int i = 0; i < num_of_bands; ++i) {
+      if (counters[i] != 0){
+         amplitude_array[i] = sums[i] / (counters[i]*led_intervall);
+      } else {
+         amplitude_array[i] = 0;
+      }
    }
 
-   if (k2 != 0) {
-      amplitude_array[1] = sum_band_2 / (k2*led_intervall);
-   } else {
-      amplitude_array[1] = 0;
-   }
-
-   if (k3 != 0) {
-      amplitude_array[2] = sum_band_3 / (k3*led_intervall);
-   } else {
-      amplitude_array[2] = 0;
-   }
-
-   if (k4 != 0) {
-      amplitude_array[3] = sum_band_4 / (k4*led_intervall);
-   } else {
-      amplitude_array[3] = 0;
-   }
-
-
-   if (k5 != 0) {
-      amplitude_array[4] = sum_band_5 / (k5*led_intervall);
-   } else {
-      amplitude_array[4] = 0;   
-   }
-
-
-   if (k6 != 0) {
-      amplitude_array[5] = sum_band_6 / (k6*led_intervall);
-   } else {
-      amplitude_array[5] = 0;
-   }
-   
-   if (k7 != 0) {
-      amplitude_array[6] = sum_band_7 / (k7*led_intervall);
-   } else {
-      amplitude_array[6] = 0;
-   }
-
-   if (k8 != 0) {
-      amplitude_array[7] = sum_band_8 / (k8*led_intervall); 
-   } else {
-      amplitude_array[7] = 0;
-   }
-
-   Serial.print(samples_read); Serial.print(" ------- ");
-
-   Serial.print(amplitude_array[0]); Serial.print("; ");
-   Serial.print(amplitude_array[2]); Serial.print("; ");
-   Serial.print(amplitude_array[2]); Serial.print("; ");
-   Serial.print(amplitude_array[3]); Serial.print("; ");
-   Serial.print(amplitude_array[4]); Serial.print("; ");
-   Serial.print(amplitude_array[5]); Serial.print("; ");
-   Serial.print(amplitude_array[6]); Serial.print("; ");
-   Serial.print(amplitude_array[7]); Serial.println("; ");
-
-/*
-   int colors[3];
-   int index1 = color.indexOf(',');
-   colors[0] = std::stoi(color.substring(index1));
-   int index2 = color.indexOf(',', index1 +1);
-   colors[1] = std::stoi(color.substring(index1 + 1, index2));
-   colors[2] = std::stoi(color.substring(index2 + 1));
-
-*/
-
-   for (int columns = 0; columns < 8; ++columns) {
+   //Add spectrum with rainbow colors to Matrix
+   for (int columns = 0; columns < num_of_bands; ++columns) {
       for (int rows = 0; rows < ROWS; ++rows) {
          for (int k = 0; k < 3; ++k) {
             if (rows < (NUM_LEDS - static_cast<int>(amplitude_array[columns]))) {
                ledMatrix[rows][columns][k] = 0;
             } else {
-               ledMatrix[rows][columns][k] = 20;
+               switch (k) {
+                  case 0:
+                     ledMatrix[rows][columns][k] = 255 - (rows*255/7);
+                     break;
+                  
+                  case 1:
+                     if (rows <= (7/2)) {
+                        ledMatrix[rows][columns][k] = 255*2*rows/7;
+                     } else {
+                        ledMatrix[rows][columns][k] = 2*rows*255/7-255;
+                     }
+                     break; 
+
+                  case 2:
+                     ledMatrix[rows][columns][k] = 255*rows/7;
+                     break;
+                     
+                  default:
+                     break;
+               }
             }
          }
       }
