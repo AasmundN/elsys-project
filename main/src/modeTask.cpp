@@ -53,7 +53,7 @@ void doFFT() {
    Serial.println(samples[0]);
 }
 
-void task2() {
+void modeTask() {
    // check which mode the hat is in
    if (state == "sound") {
       if (millis() > milliSecLastCheckDoFFT + refreshTimeDoFFT) {
@@ -73,5 +73,5 @@ void task2() {
          updateMatrix();
          milliSecLastCheckShiftMatrix = millis();
       }  
-   } 
+   }  
 }
