@@ -18,19 +18,6 @@ void setupMatrix() {
    Serial.println("LED setup done");
 }
 
-void Task1code( void* pvParameters ) {
-   Serial.print("Task1 running on core ");
-   Serial.println(xPortGetCoreID());
-
-   for(;;) {
-      // task 1 code
-      task1();
-      // do not remove delay: 
-      // https://stackoverflow.com/questions/66278271/task-watchdog-got-triggered-the-tasks-did-not-reset-the-watchdog-in-time
-      vTaskDelay(portTICK_PERIOD_MS);
-   }
-}
-
 void Task2code( void* pvParameters ) {
    Serial.print("Task2 running on core ");
    Serial.println(xPortGetCoreID());
