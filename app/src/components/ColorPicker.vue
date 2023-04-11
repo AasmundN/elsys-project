@@ -24,6 +24,8 @@
 <script setup>
 import { ref } from "vue"
 
+const enc = new TextEncoder()
+
 const color = ref("#FF0000")
 const snackbar = ref(false)
 
@@ -40,6 +42,6 @@ const submit = () => {
       .match(/.{1,2}/g)
       .map((val) => parseInt(val, 16))
 
-   emit("writeValue", colorIntArr.slice(0, 3).join(","))
+   emit("writeValue", enc.encode(colorIntArr.slice(0, 3).join(",")), "color")
 }
 </script>
