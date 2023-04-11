@@ -20,14 +20,13 @@
          </v-fade-transition>
 
          <v-fade-transition leave-absolute>
-            <Matrix
-               v-if="mode === 'matrix' && status"
-               @writeValue="
-                  (value, characteristic) => writeCharacteristic(value, characteristic)
-               " />
-            <ColorPicker
-               v-if="mode != 'matrix' && status"
-               @write-value="(newColor) => writeCharacteristic(enc.encode(newColor), 'color')" />
+            <keep-alive>
+               <component
+                  :is="component"
+                  @writeValue="
+                     (value, characteristic) => writeCharacteristic(value, characteristic)
+                  " />
+            </keep-alive>
          </v-fade-transition>
       </v-main>
 
@@ -42,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue"
+import { ref, computed } from "vue"
 import { useTheme } from "vuetify"
 
 // components
@@ -69,7 +68,7 @@ const status = ref(false)
 const connecting = ref(false)
 const themeMode = ref(false)
 // modes: sound motion matrix
-const mode = ref("sound")
+const mode = ref("matrix")
 const theme = useTheme()
 
 let device, server, service
@@ -79,6 +78,8 @@ let characteristics = {
    matrix: null,
    speed: null,
 }
+
+const component = computed(() => (mode.value === "matrix" ? Matrix : ColorPicker))
 
 const toggleTheme = () => {
    theme.global.name.value = themeMode.value ? "light" : "dark"
