@@ -6,12 +6,15 @@
 #include <BLEServer.h>
 #include <FastLED.h>
 #include "ADCSampler.h"
+#include <Wire.h>
+
 
 // IO utilities
 
 #define LED_PIN 5
 #define LED 2
 #define AUDIO_IN_PIN 35 
+const int MPU_addr=0x68;
 
 // I2S utilities
 

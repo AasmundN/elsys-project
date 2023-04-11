@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <global.h>
 
-String state = "sound";
+String state = "motion";
 String color = "255,0,0";
 String speed = "0";
 
