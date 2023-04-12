@@ -20,14 +20,15 @@
          </v-fade-transition>
 
          <v-fade-transition leave-absolute>
-            <keep-alive>
-               <component
-                  v-if="status"
-                  :is="component"
-                  @writeValue="
-                     (value, characteristic) => writeCharacteristic(value, characteristic)
-                  " />
-            </keep-alive>
+            <template v-if="status">
+               <keep-alive>
+                  <component
+                     :is="component"
+                     @writeValue="
+                        (value, characteristic) => writeCharacteristic(value, characteristic)
+                     " />
+               </keep-alive>
+            </template>
          </v-fade-transition>
       </v-main>
 
