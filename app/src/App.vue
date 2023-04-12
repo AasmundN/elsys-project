@@ -22,6 +22,7 @@
          <v-fade-transition leave-absolute>
             <keep-alive>
                <component
+                  v-if="status"
                   :is="component"
                   @writeValue="
                      (value, characteristic) => writeCharacteristic(value, characteristic)
