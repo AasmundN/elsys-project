@@ -32,12 +32,11 @@ void modeTaskcode( void* pvParameters ) {
    }
 
    for(;;) {
-      // task 2 code
-      // Serial.println("Task 2 running");
+      // run modeTask
       modeTask();
       // do not remove delay: 
       // https://stackoverflow.com/questions/66278271/task-watchdog-got-triggered-the-tasks-did-not-reset-the-watchdog-in-time
-      vTaskDelay(10/portTICK_PERIOD_MS);
+      vTaskDelay(portTICK_PERIOD_MS);
    }
 }
 
@@ -47,7 +46,7 @@ void setupTasks(TaskHandle_t modeTask) {
    xTaskCreatePinnedToCore(
                   modeTaskcode,   /* Task function. */
                   "modeTask",     /* name of task. */
-                  1000,       /* Stack size of task */
+                  10000,       /* Stack size of task */
                   adcSampler,  /* parameter of the task */
                   1,           /* priority of the task */
                   &modeTask,      /* Task handle to keep track of created task */
