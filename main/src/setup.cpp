@@ -73,8 +73,8 @@ void setupBluetooth() {
                                           BLECharacteristic::PROPERTY_WRITE
                                        );
 
-   pColorCharacteristic = pService->createCharacteristic(
-                                          COLOR_CHARACTERISTIC_UUID,
+   pFillCharacteristic = pService->createCharacteristic(
+                                          FILL_CHARACTERISTIC_UUID,
                                           BLECharacteristic::PROPERTY_READ |
                                           BLECharacteristic::PROPERTY_WRITE
                                        );
@@ -95,13 +95,13 @@ void setupBluetooth() {
    // set callbacks
    characteristicCallbacks *callbacks = new characteristicCallbacks();
    pStatusCharacteristic->setCallbacks(callbacks);
-   pColorCharacteristic->setCallbacks(callbacks);
+   pFillCharacteristic->setCallbacks(callbacks);
    pMatrixCharacteristic->setCallbacks(callbacks);
    pSpeedCharacteristic->setCallbacks(callbacks);
 
    // set inital characteristic values
    pStatusCharacteristic->setValue("");
-   pColorCharacteristic->setValue("");
+   pFillCharacteristic->setValue("");
    pMatrixCharacteristic->setValue("");
    pSpeedCharacteristic->setValue("");
    pService->start();

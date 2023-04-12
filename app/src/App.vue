@@ -50,13 +50,14 @@ import { useTheme } from "vuetify"
 import Connect from "./components/Connect.vue"
 import Mode from "./components/Mode.vue"
 import Matrix from "./components/Matrix.vue"
-import ColorPicker from "./components/ColorPicker.vue"
+import Motion from "./components/Motion.vue"
+import Sound from "./components/Sound.vue"
 
 const serviceUuid = "4fafc201-1fb5-459e-8fcc-c5c9c331914b"
 
 const characteristicUuids = {
    mode: "beb5483e-36e1-4688-b7f5-ea07361b26a8",
-   color: "e963c47e-c96a-4aee-8859-922adb4ac93a",
+   fill: "e963c47e-c96a-4aee-8859-922adb4ac93a",
    matrix: "9f1b5ff8-b8ee-4e6c-b0be-668d85113b13",
    speed: "89177ae3-2410-4eeb-b484-75861c2e108a",
 }
@@ -76,12 +77,23 @@ const theme = useTheme()
 let device, server, service
 let characteristics = {
    mode: null,
-   color: null,
+   fill: null,
    matrix: null,
    speed: null,
 }
 
-const component = computed(() => (mode.value === "matrix" ? Matrix : ColorPicker))
+const component = computed(() => {
+   switch (mode.value) {
+      case "matrix":
+         return Matrix
+
+      case "motion":
+         return Motion
+
+      case "sound":
+         return Sound
+   }
+})
 
 const toggleTheme = () => {
    theme.global.name.value = themeMode.value ? "light" : "dark"
