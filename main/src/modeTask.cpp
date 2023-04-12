@@ -1,5 +1,6 @@
 #include <global.h>
 #include <Arduino.h>
+#include <gyroFunctions.h>
 #include <fftFunctions.h>
 
 unsigned long refreshTimeShiftMatrix;
@@ -8,7 +9,8 @@ unsigned long milliSecLastCheckShiftMatrix = 0;
 unsigned long refreshTimeDoFFT = 10;
 unsigned long milliSecLastCheckDoFFT = 0;
 
-
+unsigned long refreshTimeDoMotion = 10;
+unsigned long milliSecLastCheckDoMotion = 0;
 
 void shiftMatrix(int direction) {
    // create new, shifted matrix
@@ -61,7 +63,11 @@ void modeTask() {
          milliSecLastCheckDoFFT = millis();
       }  
    } else if (state == "motion") {
-
+      if (millis() > milliSecLastCheckDoMotion + refreshTimeDoMotion) {
+         doMotion();
+         updateMatrix();
+         milliSecLastCheckDoMotion = millis();
+      } 
    } else if (state == "matrix") {
       int speedInt = speed.toInt(); 
       if (!speedInt) return;
