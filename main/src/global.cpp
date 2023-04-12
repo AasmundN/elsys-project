@@ -2,7 +2,7 @@
 #include <global.h>
 
 String state = "matrix";
-String color = "255,0,0";
+String fill = "6";
 String speed = "0";
 
 ADCSampler *adcSampler = NULL;
@@ -34,7 +34,7 @@ void updateMatrix() {
 
 BLEServer* pServer = NULL;
 BLECharacteristic* pStatusCharacteristic = NULL;
-BLECharacteristic* pColorCharacteristic = NULL;
+BLECharacteristic* pFillCharacteristic = NULL;
 BLECharacteristic* pMatrixCharacteristic = NULL;
 BLECharacteristic* pSpeedCharacteristic = NULL;
 
@@ -78,7 +78,7 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
 
    if (strcmp(uuid, STATUS_CHARACTERISTIC_UUID) == 0) pHatParameter = &state;
 
-   if (strcmp(uuid, COLOR_CHARACTERISTIC_UUID) == 0) pHatParameter = &color;
+   if (strcmp(uuid, FILL_CHARACTERISTIC_UUID) == 0) pHatParameter = &fill;
    
    if (strcmp(uuid, SPEED_CHARACTERISTIC_UUID) == 0) pHatParameter = &speed;
 
