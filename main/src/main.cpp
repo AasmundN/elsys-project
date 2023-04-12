@@ -42,6 +42,7 @@ void setup() {
    // setup functions
    setupMatrix();
    setupBluetooth();
+   setupGyro();
    setupTasks(modeTask);
 
    // setup microphone pin

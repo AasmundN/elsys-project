@@ -115,3 +115,12 @@ void setupBluetooth() {
 
    Serial.println("Bluetooth setup done");
 }
+
+void setupGyro() {
+   // Gyro avlesning
+   Wire.begin();
+   Wire.beginTransmission(MPU_addr);
+   Wire.write(0x6B);
+   Wire.write(0);
+   Wire.endTransmission(true);
+}

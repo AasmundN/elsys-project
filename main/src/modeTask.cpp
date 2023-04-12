@@ -1,12 +1,16 @@
 #include <global.h>
 #include <ESP32_fft.h>
 #include <Arduino.h>
+#include <gyroFunctions.h>
 
 unsigned long refreshTimeShiftMatrix;
 unsigned long milliSecLastCheckShiftMatrix = 0;
 
 unsigned long refreshTimeDoFFT = 10;
 unsigned long milliSecLastCheckDoFFT = 0;
+
+unsigned long refreshTimeDoMotion = 10;
+unsigned long milliSecLastCheckDoMotion = 0;
 
 //Sampling
 #define FFT_N 256 
@@ -244,6 +248,8 @@ void doFFT() {
    }
 }
 
+
+
 void modeTask() {
    // check which mode the hat is in
    if (state == "sound") {
@@ -253,7 +259,11 @@ void modeTask() {
          milliSecLastCheckDoFFT = millis();
       }  
    } else if (state == "motion") {
-
+      if (millis() > milliSecLastCheckDoMotion + refreshTimeDoMotion) {
+         doMotion();
+         updateMatrix();
+         milliSecLastCheckDoMotion = millis();
+      } 
    } else if (state == "matrix") {
       int speedInt = speed.toInt(); 
       if (!speedInt) return;
