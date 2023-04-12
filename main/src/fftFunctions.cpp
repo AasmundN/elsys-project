@@ -164,19 +164,19 @@ void spectrumToMatrix() {
             } else {
                switch (k) {
                   case 0:
-                     ledMatrix[rows][columns][k] = 255 - (rows*255/7);
+                     ledMatrix[rows][columns][k] = (rows*255/7);
                      break;
                   
                   case 1:
                      if (rows <= (7/2)) {
-                        ledMatrix[rows][columns][k] = 255*2*rows/7;
-                     } else {
-                        ledMatrix[rows][columns][k] = 2*rows*255/7-255;
+                        ledMatrix[rows][columns][k] = 255*rows/7;
+                     } else { 
+                        ledMatrix[rows][columns][k] = rows*255/7 - 255;
                      }
                      break; 
 
                   case 2:
-                     ledMatrix[rows][columns][k] = 255*rows/7;
+                     ledMatrix[rows][columns][k] = 255 - 255*rows/7;
                      break;
                      
                   default:
