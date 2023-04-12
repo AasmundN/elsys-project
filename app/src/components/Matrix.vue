@@ -1,7 +1,7 @@
 <template>
    <v-container class="pa-0">
       <v-row no-gutters justify="center">
-         <v-btn color="success" @click="submit" prepend-icon="mdi-cloud-upload">
+         <v-btn color="success" @click="submit(false)" prepend-icon="mdi-cloud-upload">
             Oppdater hatt
          </v-btn>
       </v-row>
@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue"
+import { ref, onUpdated, onMounted } from "vue"
 import { useDisplay } from "vuetify/lib/framework.mjs"
 
 // matrix size
@@ -77,7 +77,7 @@ const enc = new TextEncoder()
 const { width, mobile } = useDisplay()
 
 const emit = defineEmits(["writeValue"])
-const color = ref("#0A2237")
+const color = ref("#0055DD")
 const overlay = ref(false)
 const ledElements = ref([])
 const speed = ref(0)
@@ -94,13 +94,13 @@ const setLed = (event) => {
    else targetLedStyle.backgroundColor = null
 }
 
-const submit = async () => {
+const submit = async (force) => {
    emit("writeValue", enc.encode(speed.value), "speed")
 
    const ledMatrix = ledElements.value.map((led) => led.style.backgroundColor)
 
    // if matrix is unchanged, do not update the matrix
-   if (JSON.stringify(ledMatrix) === previousMatrix) return
+   if (JSON.stringify(ledMatrix) === previousMatrix && !force) return
 
    // give the bluetooth stack time to get ready for new transmission
    await new Promise((resolve, reject) => {
@@ -134,6 +134,9 @@ const matrixToByteStream = (ledMatrix) => {
 const clearMatrix = () => {
    ledElements.value.forEach((led) => (led.style.backgroundColor = null))
 }
+
+onMounted(() => submit(true))
+onUpdated(() => submit(true))
 </script>
 
 <style scoped>

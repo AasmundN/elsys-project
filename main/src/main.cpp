@@ -5,21 +5,21 @@
 #include <setup.h>
 #include <global.h>
 
-TaskHandle_t Task1;
-TaskHandle_t Task2;
+TaskHandle_t modeTask;
 
 i2s_config_t i2s_config = {
-    .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX | I2S_MODE_ADC_BUILT_IN),
-    .sample_rate = I2S_SAMPLE_RATE,
-    .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
-    .channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
-    .communication_format = I2S_COMM_FORMAT_I2S_LSB,
-    .intr_alloc_flags = ESP_INTR_FLAG_LEVEL1,
-    .dma_buf_count = 2,
-    .dma_buf_len = 1024,
-    .use_apll = false,
-    .tx_desc_auto_clear = false,
-    .fixed_mclk = 0};
+   .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX | I2S_MODE_ADC_BUILT_IN),
+   .sample_rate = I2S_SAMPLE_RATE,
+   .bits_per_sample = I2S_BITS_PER_SAMPLE_16BIT,
+   .channel_format = I2S_CHANNEL_FMT_ONLY_LEFT,
+   .communication_format = I2S_COMM_FORMAT_I2S_LSB,
+   .intr_alloc_flags = ESP_INTR_FLAG_LEVEL1,
+   .dma_buf_count = 2,
+   .dma_buf_len = 1024,
+   .use_apll = false,
+   .tx_desc_auto_clear = false,
+   .fixed_mclk = 0
+};
 
 // void setup
 void setup() {
@@ -33,6 +33,9 @@ void setup() {
    Serial.println();
 
    // create adcSampler instance
+   Serial.print("Setup running on core ");
+   Serial.println(xPortGetCoreID());
+
    adcSampler = new ADCSampler(ADC_UNIT_1, ADC1_CHANNEL_7, i2s_config);
    adcSampler->start();
 
@@ -40,7 +43,7 @@ void setup() {
    setupMatrix();
    setupBluetooth();
    setupGyro();
-   setupTasks(Task1, Task2);
+   setupTasks(modeTask);
 
    // setup microphone pin
    pinMode(AUDIO_IN_PIN, INPUT);

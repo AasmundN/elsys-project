@@ -2,10 +2,10 @@
    <v-container fluid class="pa-0 pb-10 mt-10">
       <v-row no-gutters justify="center">
          <v-btn
-            :variant="mode === 'sound' ? 'tonal' : 'plain'"
+            :variant="mode === 'matrix' ? 'tonal' : 'plain'"
             class="rounded-e-0"
-            @click="$emit('setMode', 'sound')">
-            Lyd
+            @click="$emit('setMode', 'matrix')">
+            Egendefinert
          </v-btn>
          <v-divider vertical />
          <v-btn
@@ -16,10 +16,10 @@
          </v-btn>
          <v-divider vertical />
          <v-btn
-            :variant="mode === 'matrix' ? 'tonal' : 'plain'"
+            :variant="mode === 'sound' ? 'tonal' : 'plain'"
             class="rounded-s-0"
-            @click="$emit('setMode', 'matrix')">
-            Egendefinert
+            @click="$emit('setMode', 'sound')">
+            Lyd
          </v-btn>
       </v-row>
    </v-container>

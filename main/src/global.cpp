@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <global.h>
 
-String state = "motion";
+String state = "matrix";
 String color = "255,0,0";
 String speed = "0";
 
@@ -97,9 +97,11 @@ void characteristicCallbacks::onWrite(BLECharacteristic* pCharacteristic) {
 }
 
 void serverCallbacks::onConnect(BLEServer* pServer) {
-   deviceConnected = true;
+   Serial.println("Device connected");
 }
 
 void serverCallbacks::onDisconnect(BLEServer* pServer) {
-   deviceConnected = false;
+   delay(500); // give the bluetooth stack the chance to get things ready
+   pServer->startAdvertising(); // restart advertising
+   Serial.println("Device disconnected, restarting advertising");
 }
