@@ -37,7 +37,7 @@ watch(fillInt, () => {
    if (writingValue) return
 
    writingValue = true
-   const writeTimeOut = setTimeout(() => {
+   setTimeout(() => {
       writingValue = false
       emit("writeValue", enc.encode(fillInt.value), "fill")
    }, 200)
