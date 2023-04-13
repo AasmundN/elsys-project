@@ -38,9 +38,14 @@ watch(fillInt, () => {
 
    writingValue = true
    const writeTimeOut = setTimeout(() => {
-      console.log("Writing: ", fillInt.value)
       writingValue = false
       emit("writeValue", enc.encode(fillInt.value), "fill")
    }, 200)
 })
 </script>
+
+<style scoped>
+.v-input {
+   height: 200px !important;
+}
+</style>
