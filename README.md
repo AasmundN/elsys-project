@@ -21,6 +21,8 @@ Project repository for NTNU subject _TT4270 Elsys prosjekt_ spring 2023.
 
 ---
 
+To run the local development server run, download the source code and run the following commands:
+
 ```sh
 cd app
 ```
