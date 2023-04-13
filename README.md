@@ -1,7 +1,7 @@
 ![image](https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D)
 ![image](https://img.shields.io/badge/Vuetify-1867C0?style=for-the-badge&logo=vuetify&logoColor=white)
 
-## Elsys project <img style="position: relative; top: 18px;" width="50" height="50" src="https://scontent.xx.fbcdn.net/v/t1.15752-9/339065060_1997846673886286_913586771088909749_n.png?_nc_cat=109&ccb=1-7&_nc_sid=aee45a&_nc_ohc=N9sq403BY-YAX_KqNql&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdQykzMZ4O2XJBAsQrDeDKPi3QRYSgRhn3hvxAC96559Dw&oe=645F3820">
+### Elsys project <img style="position: relative; top: 18px;" width="50" height="50" src="https://scontent.xx.fbcdn.net/v/t1.15752-9/339065060_1997846673886286_913586771088909749_n.png?_nc_cat=109&ccb=1-7&_nc_sid=aee45a&_nc_ohc=N9sq403BY-YAX_KqNql&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_AdQykzMZ4O2XJBAsQrDeDKPi3QRYSgRhn3hvxAC96559Dw&oe=645F3820">
 
 ---
 
@@ -17,7 +17,7 @@ Project repository for NTNU subject _TT4270 Elsys prosjekt_ spring 2023.
 -  [Vuetify 3](https://next.vuetifyjs.com/en/) - Material Design Framework
 -  [PlatformIO](https://platformio.org/) - Embedded development in VSCode
 
-## Web application setup
+### Web application setup
 
 ---
 
@@ -33,13 +33,13 @@ npm install
 npm run serve
 ```
 
-## Microcontroller setup
+### Microcontroller setup
 
 ---
 
 The microcontroller used in this project is an [ESP32](https://en.wikipedia.org/wiki/ESP32). To upload the project code to your microcontroller, first install [PlatformIO](https://marketplace.visualstudio.com/items?itemName=platformio.platformio-ide) in [VSCode](https://code.visualstudio.com/). Open the repository directory [main](main/). You can now upload the project.
 
-## Sensor setup
+### Sensor setup
 
 ---
 
