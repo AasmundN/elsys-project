@@ -22,7 +22,7 @@ Project repository for NTNU subject _TT4270 Elsys prosjekt_ spring 2023.
 ---
 
 ```sh
-cd /app
+cd app
 ```
 
 ```sh
