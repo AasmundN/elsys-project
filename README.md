@@ -5,7 +5,7 @@
 
 ---
 
-Project repository for NTNU subject _TT4270 Elsys prosjekt_ spring 2023.
+Project repository for NTNU subject _TT4270 Elsys prosjekt_ spring 2023. 
 
 🔗 [Live web application ](https://partyhatt.site/)
 
@@ -45,4 +45,4 @@ The microcontroller used in this project is an [ESP32](https://en.wikipedia.org/
 
 ---
 
-The sensors used for the project are the [Max9814](https://www.fruugonorge.com/botao-max9814-electret-mic-microphone-amplifier-module-auto-gain-control/p-118346267-248653265?language=en&ac=ProductCasterAPI&asc=pmax&gclid=CjwKCAjw0N6hBhAUEiwAXab-TdKtCogrgaKGedufb5ztdlp024D4YnC2fW9KTFl-NPYy-jNSEylLVBoC07kQAvD_BwE) microphone and the [MMA8451](<https://no.rs-online.com/web/p/motion-sensor-ics/9054665?cm_mmc=NO-PLA-DS3A-_-google-_-PLA_NO_NO_Semiconductors_Whoop-_-(NO:Whoop!)+Motion+Sensor+ICs-_-9054665&matchtype=&pla-327734554961&gclid=CjwKCAjw0N6hBhAUEiwAXab-TRhGJnz1WGHHL0heU1fYiKufu3wxTizIHyHHvrfqkiPikoXhszkTYhoCV1wQAvD_BwE&gclsrc=aw.ds>) gyroscope, both from [Aadafruit](https://www.adafruit.com/category/521). The pin setup is specified in the corresponding program files.
+The sensors used for the project are the [Max9814](https://www.fruugonorge.com/botao-max9814-electret-mic-microphone-amplifier-module-auto-gain-control/p-118346267-248653265?language=en&ac=ProductCasterAPI&asc=pmax&gclid=CjwKCAjw0N6hBhAUEiwAXab-TdKtCogrgaKGedufb5ztdlp024D4YnC2fW9KTFl-NPYy-jNSEylLVBoC07kQAvD_BwE) microphone and the [MMA8451](<https://no.rs-online.com/web/p/motion-sensor-ics/9054665?cm_mmc=NO-PLA-DS3A-_-google-_-PLA_NO_NO_Semiconductors_Whoop-_-(NO:Whoop!)+Motion+Sensor+ICs-_-9054665&matchtype=&pla-327734554961&gclid=CjwKCAjw0N6hBhAUEiwAXab-TRhGJnz1WGHHL0heU1fYiKufu3wxTizIHyHHvrfqkiPikoXhszkTYhoCV1wQAvD_BwE&gclsrc=aw.ds>) gyroscope, both from [Adafruit](https://www.adafruit.com/category/521). The pin setup is specified in the corresponding program files.
