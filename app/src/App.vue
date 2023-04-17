@@ -141,7 +141,7 @@ const onDisconnect = () => {
    device = server = service = null
    characteristics = {
       mode: null,
-      color: null,
+      fill: null,
       matrix: null,
       speed: null,
    }
