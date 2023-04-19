@@ -133,11 +133,6 @@ void valuesToSum(){
                counters[18]++;
                break; 
 
-            case (min_freq + 19*freq_intervall) ... (min_freq + 20*freq_intervall - 1):
-               sums[19] += fft_output[i];
-               counters[19]++;
-               break; 
-
             default:
                break;
          }
