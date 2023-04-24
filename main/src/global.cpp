@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <global.h>
 
-String state = "motion";
+String state = "matrix";
 String fill = "6";
 String speed = "0";
 
