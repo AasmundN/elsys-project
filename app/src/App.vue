@@ -62,7 +62,6 @@ const characteristicUuids = {
    speed: "89177ae3-2410-4eeb-b484-75861c2e108a",
 }
 
-const dec = new TextDecoder()
 const enc = new TextEncoder()
 
 const message = ref("")
@@ -106,12 +105,13 @@ const connectDevice = async () => {
       device = await navigator.bluetooth.requestDevice({
          filters: [{ services: [serviceUuid] }],
       })
+
       device.addEventListener("gattserverdisconnected", onDisconnect)
       // connect to BLE server
       server = await device.gatt.connect()
       // get service
       service = await server.getPrimaryService(serviceUuid)
-
+      // get characteristics
       for (const characteristic in characteristics) {
          characteristics[characteristic] = await service.getCharacteristic(
             characteristicUuids[characteristic]
