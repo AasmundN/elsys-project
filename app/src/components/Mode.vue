@@ -5,21 +5,21 @@
             :variant="mode === 'matrix' ? 'tonal' : 'plain'"
             class="rounded-e-0"
             @click="$emit('setMode', 'matrix')">
-            Egendefinert
+            Creative
          </v-btn>
          <v-divider vertical />
          <v-btn
             :variant="mode === 'motion' ? 'tonal' : 'plain'"
             class="rounded-0"
             @click="$emit('setMode', 'motion')">
-            Bevegelse
+            Beer
          </v-btn>
          <v-divider vertical />
          <v-btn
             :variant="mode === 'sound' ? 'tonal' : 'plain'"
             class="rounded-s-0"
             @click="$emit('setMode', 'sound')">
-            Lyd
+            Music
          </v-btn>
       </v-row>
    </v-container>
