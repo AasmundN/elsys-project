@@ -1,7 +1,9 @@
 ![image](https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D)
 ![image](https://img.shields.io/badge/Vuetify-1867C0?style=for-the-badge&logo=vuetify&logoColor=white)
 
-<img style="position: relative; left: 50%;" width="100" height="100" src="logo.png">
+<p align="center">
+    <img width="120" src="logo.png">
+</p>
 
 ---
 
