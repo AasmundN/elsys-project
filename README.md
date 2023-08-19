@@ -4,6 +4,7 @@
 <p align="center">
     <img width="120" style="position: relative; bottom: -30px;" src="logo.png">
 </p>
+
 Project repository for NTNU subject _TT4270 Elsys prosjekt_ spring 2023.
 
 🔗 [Live web application ](https://partyhatt.site/)
