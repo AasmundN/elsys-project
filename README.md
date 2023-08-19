@@ -1,7 +1,7 @@
 ![image](https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D)
 ![image](https://img.shields.io/badge/Vuetify-1867C0?style=for-the-badge&logo=vuetify&logoColor=white)
 
-### Elsys project <img style="position: relative; top: 18px;" width="50" height="50" src="logo.png">
+<img style="position: relative; left: 50%;" width="100" height="100" src="logo.png">
 
 ---
 
