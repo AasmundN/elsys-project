@@ -2,7 +2,7 @@
 ![image](https://img.shields.io/badge/Vuetify-1867C0?style=for-the-badge&logo=vuetify&logoColor=white)
 
 <p align="center">
-    <img width="120" src="logo.png">
+    <img width="120" style="position: relative; bottom: -30px;" src="logo.png">
 </p>
 
 ---
